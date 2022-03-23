@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use App\Models\Course;
 use App\Http\Resources\CourseResource;
 use App\Rules\IsTeacher;
+use App\Models\Course;
+use App\Models\UserCourse;
 
 class CourseController extends Controller
 {
@@ -16,15 +17,16 @@ class CourseController extends Controller
 
     public function index(){
         $courses = Course::with('teacher.profile')->get();
-
         return response(new CourseResource($courses));
     }
 
     public function show($course_id){
-        $course = Course::with('teacher.profile')->with('course_sections')->where('id', $course_id)->firstOrFail();
+        $course = Course::with('teacher.profile')->with('course_sections')->with('category')->where('id', $course_id)->firstOrFail();
         if($course->status == 'draft'){
             return response('course is not yet available!', 403);
         }
+        
+        $course->total_students = UserCourse::where('course_id', $course_id)->count();
 
         return response(new CourseResource($course));
     }
@@ -66,7 +68,7 @@ class CourseController extends Controller
     }
 
     public function update(Request $request, $course_id){
-        //check if user is admin
+        // check if user is admin
         if(!Auth::user()->role == 'admin'){
             //check if user is owner
             if(Auth::id() != Course::findOrFail($course_id)->teacher_id){

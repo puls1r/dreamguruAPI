@@ -21,10 +21,12 @@ class SectionController extends Controller
             'title' => ['required', 'string', 'max:255'],
         ]);
 
+        $order = CourseSection::where('course_id', $course_id)->where('status', 'completed')->max('order') + 1;
         $section = new CourseSection;
         $section->title = $request->title;
         $section->course_id = $course_id;
-        $section->order = 1;
+        $section->order = $order;
+        $section->status = 'draft';
 
         if(!$section->save()){
             return response('section creation failed!', 500);
@@ -36,6 +38,7 @@ class SectionController extends Controller
     public function update(Request $request, $section_id){
         $this->validate($request, [
             'title' => ['string', 'max:255'],
+            'status' => ['string', 'in:completed,draft,archived'],
             'order' => ['numeric'],
         ]);
 
