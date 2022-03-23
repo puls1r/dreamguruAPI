@@ -9,6 +9,8 @@ class CourseSection extends Model
 {
     use HasFactory;
 
+    protected $with = ['quizzes', 'parts', 'assignments', 'discussions'];
+
     public function course(){
         return $this->belongsTo(Course::class);
     }
