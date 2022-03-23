@@ -22,6 +22,7 @@ class SectionPartController extends Controller
             'picture' => ['string', 'max:255'],
             'video' => ['string', 'max:255'],
             'status' => ['required','string', 'in:completed,draft'],
+            'is_unlock' => ['required','numeric', 'in:0,1'],
         ]);
 
         $part = new SectionPart;
@@ -31,6 +32,7 @@ class SectionPartController extends Controller
         $part->picture = $request->picture;
         $part->video = $request->video;
         $part->status = $request->status;
+        $part->is_unlock = $request->is_unlock;
         $part->order = 1;
 
         if(!$part->save()){
@@ -48,6 +50,7 @@ class SectionPartController extends Controller
             'video' => ['string', 'max:255'],
             'order' => ['numeric'],
             'status' => ['string', 'in:completed,draft,archived'],
+            'is_unlock' => ['numeric', 'in:0,1'],
         ]);
 
         $part = SectionPart::findOrFail($part_id);

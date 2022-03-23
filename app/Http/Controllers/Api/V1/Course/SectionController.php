@@ -25,7 +25,6 @@ class SectionController extends Controller
         $section->title = $request->title;
         $section->course_id = $course_id;
         $section->order = 1;
-        $section->is_unlock = 0;
 
         if(!$section->save()){
             return response('section creation failed!', 500);
@@ -38,7 +37,6 @@ class SectionController extends Controller
         $this->validate($request, [
             'title' => ['string', 'max:255'],
             'order' => ['numeric'],
-            'is_unlock' => ['in:0,1'],
         ]);
 
         $section = CourseSection::findOrFail($section_id);
