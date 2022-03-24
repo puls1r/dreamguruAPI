@@ -17,7 +17,7 @@ class CourseController extends Controller
 
     public function index(){
         $courses = Course::with('teacher.profile')->get();
-        return response(new CourseResource($courses));
+        return response($courses);
     }
 
     public function show($course_id){
