@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\SectionQuiz;
 use App\Models\CourseSection;
+use App\Models\SectionContentOrder;
 
 class SectionQuizController extends Controller
 {
@@ -19,7 +20,6 @@ class SectionQuizController extends Controller
         $this->validate($request, [
             'quiz_id' => ['required', 'exists:quizzes,id'],
             'title' => ['required', 'string'],
-            'order' => ['numeric'],
         ]);
 
         $section = CourseSection::findOrFail($section_id);
@@ -27,12 +27,18 @@ class SectionQuizController extends Controller
         $section_quiz->course_section_id = $request->section_id;
         $section_quiz->quiz_id = $request->quiz_id;
         $section_quiz->title = $request->title;
-        $section_quiz->order = '1';
         $section_quiz->status = 'draft';
 
         if(!$section_quiz->save()){
             return response('section_quiz creation failed!', 500);
         }
+
+        $section_content_order = new SectionContentOrder;
+        $section_content_order->course_section_id = $section_quiz->course_section_id;
+        $section_content_order->content_id = $section_quiz->slug;
+        $section_content_order->order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->max('order') + 1;
+
+        $section_content_order->save();
         
         return response($section_quiz, 201);
     }
@@ -57,6 +63,13 @@ class SectionQuizController extends Controller
 
         if(!$section_quiz->save()){
             return response('section_quiz update failed!', 500);
+        }
+
+        if(isset($request->order)){
+            $section_content_order = SectionContentOrder::findOrFail('course_section_id', $section_quiz->course_section_id);
+            $section_content_order->order = $request->order;
+    
+            $section_content_order->save();
         }
         
         return response($section_quiz);

@@ -39,38 +39,38 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('students')->group(function(){
         Route::prefix('/{user_id}')->group(function(){
-            Route::get('/', [App\Http\Controllers\Api\V1\Student\StudentController::class, 'show']);
+            Route::get('/', [App\Http\Controllers\Api\V1\User\Student\StudentController::class, 'show']);
             Route::prefix('/courses')->group(function(){
-                Route::get('/', [App\Http\Controllers\Api\V1\Student\Progression\StudentCourseController::class, 'getStudentCourses'])->middleware('auth:sanctum');
+                Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentCourses'])->middleware('auth:sanctum');
             });
             Route::prefix('/parts')->group(function(){
-                Route::get('/{part_id}', [App\Http\Controllers\Api\V1\Student\Progression\PartProgressionController::class, 'show']);
-                Route::post('/{part_id}', [App\Http\Controllers\Api\V1\Student\Progression\PartProgressionController::class, 'create'])->middleware('auth:sanctum');
-                Route::put('/{part_id}', [App\Http\Controllers\Api\V1\Student\Progression\PartProgressionController::class, 'update'])->middleware('auth:sanctum');
+                Route::get('/{part_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\PartProgressionController::class, 'show']);
+                Route::post('/{part_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\PartProgressionController::class, 'create'])->middleware('auth:sanctum');
+                Route::put('/{part_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\PartProgressionController::class, 'update'])->middleware('auth:sanctum');
             });
             Route::prefix('/assignments')->group(function(){
-                Route::get('/{assignment_id}', [App\Http\Controllers\Api\V1\Student\Progression\AssignmentProgressionController::class, 'show']);
-                Route::post('/{assignment_id}', [App\Http\Controllers\Api\V1\Student\Progression\AssignmentProgressionController::class, 'create'])->middleware('auth:sanctum');
-                Route::put('/{assignment_id}', [App\Http\Controllers\Api\V1\Student\Progression\AssignmentProgressionController::class, 'update'])->middleware('auth:sanctum');
+                Route::get('/{assignment_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\AssignmentProgressionController::class, 'show']);
+                Route::post('/{assignment_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\AssignmentProgressionController::class, 'create'])->middleware('auth:sanctum');
+                Route::put('/{assignment_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\AssignmentProgressionController::class, 'update'])->middleware('auth:sanctum');
             });
             Route::prefix('/quizzes')->group(function(){
-                Route::get('/', [App\Http\Controllers\Api\V1\Student\Progression\QuizProgressionController::class, 'index'])->middleware('auth:sanctum');
-                Route::get('/{quiz_id}', [App\Http\Controllers\Api\V1\Student\Progression\QuizProgressionController::class, 'show'])->middleware('auth:sanctum');
-                Route::post('/{quiz_id}', [App\Http\Controllers\Api\V1\Student\Progression\QuizProgressionController::class, 'create'])->middleware('auth:sanctum');
-                Route::put('/{quiz_id}', [App\Http\Controllers\Api\V1\Student\Progression\QuizProgressionController::class, 'update'])->middleware('auth:sanctum');
-                Route::post('/{quiz_id}/answers', [App\Http\Controllers\Api\V1\Student\Progression\QuizProgressionController::class, 'storeAnswer'])->middleware('auth:sanctum');
+                Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'index'])->middleware('auth:sanctum');
+                Route::get('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'show'])->middleware('auth:sanctum');
+                Route::post('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'create'])->middleware('auth:sanctum');
+                Route::put('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'update'])->middleware('auth:sanctum');
+                Route::post('/{quiz_id}/answers', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'storeAnswer'])->middleware('auth:sanctum');
             });
         });
     });
  
     Route::prefix('teachers')->group(function(){
-        Route::get('/', [App\Http\Controllers\Api\V1\Teacher\TeacherController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'index']);
         Route::prefix('/{teacher_id}')->group(function(){
-            Route::get('/', [App\Http\Controllers\Api\V1\Teacher\TeacherController::class, 'show']);
+            Route::get('/', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'show']);
             Route::prefix('/courses')->group(function(){
-                Route::get('/', [App\Http\Controllers\Api\V1\Teacher\TeacherController::class, 'getCourses']);
-                Route::get('/draft', [App\Http\Controllers\Api\V1\Teacher\TeacherController::class, 'getDraftCourses'])->middleware(['auth:sanctum', 'role:teacher,admin']);
-                Route::get('/archived', [App\Http\Controllers\Api\V1\Teacher\TeacherController::class, 'getArchivedCourses'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+                Route::get('/', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'getCourses']);
+                Route::get('/draft', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'getDraftCourses'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+                Route::get('/archived', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'getArchivedCourses'])->middleware(['auth:sanctum', 'role:teacher,admin']);
                 
             });
         });
@@ -89,6 +89,8 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'show']);
             Route::put('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/sections', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::post('/rate', [App\Http\Controllers\Api\V1\Course\CourseRatingController::class, 'create'])->middleware(['auth:sanctum']);
+            Route::get('/rating', [App\Http\Controllers\Api\V1\Course\CourseRatingController::class, 'getCourseRating']);
         });
     });
 
@@ -100,6 +102,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/assignments', [App\Http\Controllers\Api\V1\Course\AssignmentController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/discussions', [App\Http\Controllers\Api\V1\Course\SectionDiscussionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/quizzes', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::get('/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'getContentOrder'])->middleware(['auth:sanctum']);
         });
     });
 
@@ -154,6 +157,10 @@ Route::prefix('v1')->group(function () {
         Route::put('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::delete('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'delete'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::post('/{section_quiz_id}/start', [App\Http\Controllers\Api\V1\Student\Progression\QuizProgressionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+    });
+
+    Route::prefix('admin')->group(function(){
+        Route::put('/users/{user_id}/role', [App\Http\Controllers\Api\V1\User\Admin\AdminController::class, 'updateUserRole'])->middleware(['auth:sanctum', 'role:admin']);
     });
 
     //payment

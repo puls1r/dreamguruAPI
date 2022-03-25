@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Student\Progression;
+namespace App\Http\Controllers\Api\V1\User\Student\Progression;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

@@ -12,4 +12,13 @@ class SectionPart extends Model
     public function section(){
         return $this->belongsTo(CourseSection::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        SectionPart::created(function ($model) {
+            $model->slug = 'part' . $model->id;
+            $model->save();
+        });
+    }
 }

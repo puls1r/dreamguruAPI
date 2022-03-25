@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\SectionPart;
+use App\Models\CourseSection;
+use App\Models\SectionContentOrder;
 
 class SectionPartController extends Controller
 {
@@ -33,11 +35,17 @@ class SectionPartController extends Controller
         $part->video = $request->video;
         $part->status = $request->status;
         $part->is_unlock = $request->is_unlock;
-        $part->order = 1;
 
         if(!$part->save()){
             return response('part creation failed!', 500);
         }
+
+        $section_content_order = new SectionContentOrder;
+        $section_content_order->course_section_id = $part->course_section_id;
+        $section_content_order->content_id = $part->slug;
+        $section_content_order->order = SectionContentOrder::where('course_section_id', $part->course_section_id)->max('order') + 1;
+
+        $section_content_order->save();
         
         return response($part);
     }
@@ -61,7 +69,14 @@ class SectionPartController extends Controller
         if(!$part->save()){
             return response('part update failed!', 500);
         }
-        
+
+        if(isset($request->order)){
+            $section_content_order = SectionContentOrder::findOrFail('course_section_id', $part->course_section_id);
+            $section_content_order->order = $request->order;
+    
+            $section_content_order->save();
+        }
+
         return response($part);
     }
 }

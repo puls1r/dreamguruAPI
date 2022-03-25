@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropColumnIsUnlockOnCourseSectionsTable extends Migration
+class CreateSectionContentsOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class DropColumnIsUnlockOnCourseSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('course_sections', function (Blueprint $table) {
-            $table->dropColumn('is_unlock');
+        Schema::create('section_contents_order', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +26,6 @@ class DropColumnIsUnlockOnCourseSectionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('course_sections', function($table) {
-            $table->boolean('is_unlock')->after('order');
-         });
+        Schema::dropIfExists('section_contents_order');
     }
 }

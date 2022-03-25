@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\CourseSection;
 use App\Models\Section;
+use App\Models\SectionContentOrder;
 
 class SectionController extends Controller
 {
     public function show($section_id){
-        $section = CourseSection::findOrFail($section_id);
-    
+        $section = CourseSection::with('section_content_orders')->findOrFail($section_id);
         return response($section);
     }
 
@@ -52,5 +52,10 @@ class SectionController extends Controller
         }
         
         return response($section, 200);
+    }
+
+    public function getContentOrder($course_section_id){
+        $section_content_order = SectionContentOrder::where('course_section_id', $course_section_id)->orderBy('order')->get();
+        return response($section_content_order);
     }
 }

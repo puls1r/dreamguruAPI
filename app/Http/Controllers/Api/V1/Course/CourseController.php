@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\CourseCollection;
 use App\Rules\IsTeacher;
 use App\Models\Course;
 use App\Models\UserCourse;
@@ -17,7 +18,7 @@ class CourseController extends Controller
 
     public function index(){
         $courses = Course::with('teacher.profile')->get();
-        return response($courses);
+        return response(new CourseCollection($courses));
     }
 
     public function show($course_id){

@@ -19,7 +19,7 @@ class CreateCourseSectionsTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses');
             $table->string('title');
             $table->integer('order')->unsigned();
-            $table->boolean('is_unlock');       //untuk section yang dibuka secara gratis
+            $table->string('status');      //completed, draft, archived
             $table->timestamps();
         });
     }

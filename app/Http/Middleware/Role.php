@@ -21,15 +21,17 @@ class Role
             return $next($request);
         }
 
-        else if($role2 != NULL)
+        else if($role2 != NULL){
             if(Auth::user()->role == $role2){
                 return $next($request);
             }
+        }
             
-        else if($role3 != NULL)
+        else if($role3 != NULL){
             if(Auth::user()->role == $role3){
                 return $next($request);
             }
+        }
 
         return response(['message' => 'forbidden'], 403);
     }

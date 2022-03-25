@@ -20,4 +20,13 @@ class SectionQuiz extends Model
     public function quiz(){
         return $this->belongsTo(Quiz::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        SectionQuiz::created(function ($model) {
+            $model->slug = 'quiz' . $model->id;
+            $model->save();
+        });
+    }
 }

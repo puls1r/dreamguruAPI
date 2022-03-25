@@ -20,7 +20,7 @@ class CreateAssignmentsTable extends Migration
             $table->string('title');
             $table->text('instruction');
             $table->string('picture')->nullable();
-            $table->integer('order')->unsigned();
+            $table->string('slug')->unique()->nullable();
             $table->string('status');       //completed, draft, archived
             $table->timestamps();
         });

@@ -24,4 +24,8 @@ class Course extends Model
     public function students(){
         return $this->belongsToMany(User::class, 'user_courses')->withPivot('is_purchased', 'status', 'certificate');
     }
+
+    public function ratings(){
+        return $this->belongsToMany(User::class, 'user_ratings')->withPivot('rating', 'comment');
+    }
 }

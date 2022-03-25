@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Assignment;
+use App\Models\SectionContentOrder;
 
 
 class AssignmentController extends Controller
@@ -30,11 +31,17 @@ class AssignmentController extends Controller
         $assignment->instruction = $request->instruction;
         $assignment->picture = $request->picture;
         $assignment->status = $request->status;
-        $assignment->order = 1;
 
         if(!$assignment->save()){
             return response('assignment creation failed!', 500);
         }
+
+        $section_content_order = new SectionContentOrder;
+        $section_content_order->course_section_id = $assignment->course_section_id;
+        $section_content_order->content_id = $assignment->slug;
+        $section_content_order->order = SectionContentOrder::where('course_section_id', $assignment->course_section_id)->max('order') + 1;
+
+        $section_content_order->save();
         
         return response($assignment);
     }
@@ -55,6 +62,13 @@ class AssignmentController extends Controller
 
         if(!$assignment->save()){
             return response('assignment update failed!', 500);
+        }
+
+        if(isset($request->order)){
+            $section_content_order = SectionContentOrder::findOrFail('course_section_id', $assignment->course_section_id);
+            $section_content_order->order = $request->order;
+    
+            $section_content_order->save();
         }
         
         return response($assignment);

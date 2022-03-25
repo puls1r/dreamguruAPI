@@ -30,4 +30,8 @@ class CourseSection extends Model
     public function discussions(){
         return $this->hasMany(SectionDiscussion::class);
     }
+
+    public function section_content_orders(){
+        return $this->hasMany(SectionContentOrder::class);
+    }
 }

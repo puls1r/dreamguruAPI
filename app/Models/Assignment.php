@@ -16,4 +16,13 @@ class Assignment extends Model
     public function course_section(){
         return $this->belongsTo(CourseSection::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        Assignment::created(function ($model) {
+            $model->slug = 'assignment' . $model->id;
+            $model->save();
+        });
+    }
 }
