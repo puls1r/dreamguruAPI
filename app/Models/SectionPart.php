@@ -9,7 +9,7 @@ class SectionPart extends Model
 {
     use HasFactory;
 
-    public function section(){
+    public function course_section(){
         return $this->belongsTo(CourseSection::class);
     }
 

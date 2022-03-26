@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('voucher_id')->nullable();
             $table->foreign('voucher_id')->references('id')->on('vouchers');
             $table->string('order_id')->unique();
-            $table->string('charge_id')->unique();
+            $table->string('charge_id')->unique()->nullable();
             $table->string('retail_payment_id')->unique()->nullable();
             $table->string('gateway');
             $table->string('payment_type');

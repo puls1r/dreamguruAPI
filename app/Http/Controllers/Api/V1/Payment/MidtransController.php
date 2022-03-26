@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Transaction;
 use App\Models\User;
-use App\Http\Controllers\Api\V1\Payment\XenditController;
 
 class MidtransController extends Controller
 {
@@ -17,15 +16,15 @@ class MidtransController extends Controller
     public function chargeCard($data_payment){
         \Midtrans\Config::$serverKey = $data_payment['api_key'];
         \Midtrans\Config::$isProduction = false;
-        
+
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'Card Payment';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -39,41 +38,38 @@ class MidtransController extends Controller
                 'token_id'      => $data_payment['token_id'],
                 'authentication'=> true,
             ),
-            // 'item_details' => array(
-            //     array(
-            //         'id' => 'a1',
-            //         'price' => 699000,
-            //         'quantity' => 1,
-            //         'name' => 'Talent Premium',
-            //     )
-            // ),
-            // 'customer_details' => array(
-            //     'first_name' => $request->first_name,
-            //     'last_name' => $request->last_name,
-            //     'email' => Auth::user()->email,
-            //     'billing_address' => array(
-            //         'first_name' => $request->first_name,
-            //         'last_name' => $request->last_name,
-            //         'email' => Auth::user()->email,
-            //         'address' => $request->address,
-            //         'city' => $request->city,
-            //         'postal_code' => $request->postal_code,
-            //         'country_code' => $request->country_code,
-            //     ),
-            // )
+            'item_details' => array(
+                array(
+                    'id' => 'course-'. $transaction->course_id,
+                    'price' => $transaction->final_amount,
+                    'quantity' => 1,
+                    'name' => $data_payment['course_details']['title'],
+                )
+            ),
+            'customer_details' => array(
+                'first_name' => $data_payment->first_name,
+                'last_name' => $data_payment->last_name,
+                'email' => Auth::user()->email,
+                'billing_address' => array(
+                    'first_name' => $data_payment->first_name,
+                    'last_name' => $data_payment->last_name,
+                    'email' => Auth::user()->email,
+                    'address' => $data_payment->address,
+                    'city' => $data_payment->city,
+                    'postal_code' => $data_payment->postal_code,
+                    'country_code' => $data_payment->country_code,
+                ),
+            )
         );
          
         $chargeData = \Midtrans\CoreApi::charge($params)->status;
         
-        $payment->transaction_id = $chargeData->transaction_id;
-        $payment->status = $chargeData->transaction_status;
-        $payment->save();
+        $transaction->charge_id = $chargeData->transaction_id;
+        $transaction->status = $chargeData->transaction_status;
+        $transaction->save();
 
-        if(isset($chargeData->redirect_url) && $chargeData->transaction_status == 'pending'){ //berarti membutuhkan 3ds
-            return view('payment.3ds', ['chargeData' => $chargeData]);
-        }
-
-        return redirect($chargeData->actions['1']->url);
+        $chargeData = json_decode(json_encode($chargeData), true);
+        return $chargeData;
     }
 
     public function chargeGopay($data_payment){
@@ -82,12 +78,12 @@ class MidtransController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'GOPAY eWallet';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -100,6 +96,17 @@ class MidtransController extends Controller
             'gopay' => array(
                 'enable_callback' => true,                // optional
                 'callback_url' => 'http://dreamguruapi.me'   // optional
+            ),
+            'item_details' => array(
+                array(
+                    'id' => 'course-'. $transaction->course_id,
+                    'price' => $transaction->final_amount,
+                    'quantity' => 1,
+                    'name' => $data_payment['course_details']['title'],
+                )
+            ),
+            'customer_details' => array(
+                'email' => Auth::user()->email,
             )
         );
          
@@ -119,12 +126,12 @@ class MidtransController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'BNI Virtual Account';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -161,12 +168,12 @@ class MidtransController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'BCA Virtual Account';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -197,12 +204,12 @@ class MidtransController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'BRIVA (BRI VIrtual Account)';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -233,12 +240,12 @@ class MidtransController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'BCA Virtual Account';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -270,12 +277,12 @@ class MidtransController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
+        $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'Midtrans';
         $transaction->payment_type = 'BCA Virtual Account';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 

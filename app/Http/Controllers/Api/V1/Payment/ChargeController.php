@@ -20,11 +20,19 @@ class ChargeController extends Controller
         //step 3 : kalkulasi harga dari table course + discount
         $course = Course::findOrFail($request->course_id);
         
-        $data_payment['course_price'] = $course->price;
-        
+        $data_payment['course_details'] = $course->toArray();
         //step 4 : charge
         switch($data_payment['payment_type']){
             case "credit_card":
+                $this->validate($data_payment, [
+                    "first_name" => ['required', 'string', 'max:30'],
+                    "last_name" => ['required', 'string', 'max:30'],
+                    "address" => ['required', 'string', 'max:100'],
+                    "city" => ['required', 'string', 'max:30'],
+                    "postal_code" => ['required', 'numeric', 'max:10'],
+                    "country_code" => ['required', 'string', 'max:30'],
+                ]);
+
                 $data_payment['api_key'] = $this->midtrans_key;
                 MidtransController::chargeCard($data_payment);
             case "mandiriVA":
