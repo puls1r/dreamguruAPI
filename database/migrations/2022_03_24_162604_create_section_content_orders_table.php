@@ -18,7 +18,9 @@ class CreateSectionContentOrdersTable extends Migration
             $table->unsignedBigInteger('course_section_id');
             $table->foreign('course_section_id')->references('id')->on('course_sections');
             $table->string('content_id');
+            $table->string('title');
             $table->unsignedInteger('order');
+            $table->string('endpoint');     //quizzes, parts, assignments
             $table->timestamps();
         });
     }

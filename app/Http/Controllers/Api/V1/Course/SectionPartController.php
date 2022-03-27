@@ -12,7 +12,11 @@ use App\Models\SectionContentOrder;
 class SectionPartController extends Controller
 {
     public function show($part_id){
-        $part = SectionPart::findOrFail($part_id);
+        $part = SectionPart::find($part_id);
+        
+        if(!$part){                          //gunakan slug untuk mengidentifikasi model
+            $part = SectionPart::where('slug', $part_id)->first();
+        }
 
         return response($part);
     }
@@ -43,6 +47,8 @@ class SectionPartController extends Controller
         $section_content_order = new SectionContentOrder;
         $section_content_order->course_section_id = $part->course_section_id;
         $section_content_order->content_id = $part->slug;
+        $section_content_order->title = $part->title;
+        $section_content_order->endpoint = 'parts';
         $section_content_order->order = SectionContentOrder::where('course_section_id', $part->course_section_id)->max('order') + 1;
 
         $section_content_order->save();
@@ -73,6 +79,7 @@ class SectionPartController extends Controller
         if(isset($request->order)){
             $section_content_order = SectionContentOrder::findOrFail('course_section_id', $part->course_section_id);
             $section_content_order->order = $request->order;
+            $section_content_order->title = $request->title;
     
             $section_content_order->save();
         }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserCourse;
 use App\Models\SectionPart;
+use App\Models\Assignment;
 
 class HasPurchased
 {
@@ -31,8 +32,39 @@ class HasPurchased
                         return response(['message' => "user doesn't own the course yet!"], 403);
                     }
                     return $next($request);
-    
-            
+                }
+
+                else if($param == 'assignment_id'){
+                    $assignment = Assignment::with('course_section')->findOrFail($value);
+                    $course_id = $assignment->course_section->course_id;
+                    $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
+                    
+                    if(!$owned){
+                        return response(['message' => "user doesn't own the course yet!"], 403);
+                    }
+                    return $next($request);
+                }
+
+                else if($param == 'discussion_id'){
+                    $discussion = SectionDiscussion::with('course_section')->findOrFail($value);
+                    $course_id = $discussion->course_section->course_id;
+                    $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
+                    
+                    if(!$owned){
+                        return response(['message' => "user doesn't own the course yet!"], 403);
+                    }
+                    return $next($request);
+                }
+
+                else if($param == 'section_quiz_id'){
+                    $section_quiz = SectionQuiz::with('course_section')->findOrFail($value);
+                    $course_id = $section_quiz->course_section->course_id;
+                    $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
+                    
+                    if(!$owned){
+                        return response(['message' => "user doesn't own the course yet!"], 403);
+                    }
+                    return $next($request);
                 }
             }
         }

@@ -13,6 +13,10 @@ class SectionQuizController extends Controller
 {
     public function show($section_quiz_id){
         $section_quiz = SectionQuiz::with('quiz')->findOrFail($section_quiz_id);
+        if(!$section_quiz){                          //gunakan slug untuk mengidentifikasi model
+            $section_quiz = SectionQuiz::where('slug', $section_quiz_id)->first();
+        }
+
         return response($section_quiz);
     }
 
@@ -36,6 +40,8 @@ class SectionQuizController extends Controller
         $section_content_order = new SectionContentOrder;
         $section_content_order->course_section_id = $section_quiz->course_section_id;
         $section_content_order->content_id = $section_quiz->slug;
+        $section_content_order->title = $section_quiz->title;
+        $section_content_order->endpoint = 'section_quizzes';
         $section_content_order->order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->max('order') + 1;
 
         $section_content_order->save();
@@ -68,6 +74,7 @@ class SectionQuizController extends Controller
         if(isset($request->order)){
             $section_content_order = SectionContentOrder::findOrFail('course_section_id', $section_quiz->course_section_id);
             $section_content_order->order = $request->order;
+            $section_content_order->title = $request->title;
     
             $section_content_order->save();
         }

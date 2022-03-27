@@ -13,6 +13,9 @@ class AssignmentController extends Controller
 {
     public function show($assignment_id){
         $assignment = Assignment::findOrFail($assignment_id);
+        if(!$assignment){                          //gunakan slug untuk mengidentifikasi model
+            $assignment = Assignment::where('slug', $assignment)->first();
+        }
 
         return response($assignment);
     }
@@ -39,6 +42,8 @@ class AssignmentController extends Controller
         $section_content_order = new SectionContentOrder;
         $section_content_order->course_section_id = $assignment->course_section_id;
         $section_content_order->content_id = $assignment->slug;
+        $section_content_order->title = $assignment->title;
+        $section_content_order->endpoint = 'assignments';
         $section_content_order->order = SectionContentOrder::where('course_section_id', $assignment->course_section_id)->max('order') + 1;
 
         $section_content_order->save();
@@ -67,6 +72,7 @@ class AssignmentController extends Controller
         if(isset($request->order)){
             $section_content_order = SectionContentOrder::findOrFail('course_section_id', $assignment->course_section_id);
             $section_content_order->order = $request->order;
+            $section_content_order->title = $request->title;
     
             $section_content_order->save();
         }

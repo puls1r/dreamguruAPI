@@ -95,7 +95,7 @@ class MidtransController extends Controller
             'payment_type' => 'gopay',
             'gopay' => array(
                 'enable_callback' => true,                // optional
-                'callback_url' => 'http://dreamguruapi.me'   // optional
+                'callback_url' => 'http://dreamguru.me'   // optional
             ),
             'item_details' => array(
                 array(
