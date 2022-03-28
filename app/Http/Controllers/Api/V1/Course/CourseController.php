@@ -22,7 +22,7 @@ class CourseController extends Controller
     }
 
     public function show($course_id){
-        $course = Course::with('teacher.profile')->with('course_sections')->with('category')->where('id', $course_id)->firstOrFail();
+        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->firstOrFail();
         if($course->status == 'draft'){
             return response('course is not yet available!', 403);
         }
