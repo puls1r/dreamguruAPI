@@ -20,6 +20,7 @@ class CreateSectionContentOrdersTable extends Migration
             $table->string('content_id');
             $table->string('title');
             $table->unsignedInteger('order');
+            $table->boolean('is_unlock');       //untuk parts yang dibuka secara gratis
             $table->string('endpoint');     //quizzes, parts, assignments
             $table->timestamps();
         });

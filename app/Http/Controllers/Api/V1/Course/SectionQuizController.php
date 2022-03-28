@@ -41,6 +41,7 @@ class SectionQuizController extends Controller
         $section_content_order->course_section_id = $section_quiz->course_section_id;
         $section_content_order->content_id = $section_quiz->slug;
         $section_content_order->title = $section_quiz->title;
+        $section_content_order->is_unlock = $section_quiz->is_unlock;
         $section_content_order->endpoint = 'section_quizzes';
         $section_content_order->order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->max('order') + 1;
 
@@ -75,6 +76,7 @@ class SectionQuizController extends Controller
             $section_content_order = SectionContentOrder::findOrFail('course_section_id', $section_quiz->course_section_id);
             $section_content_order->order = $request->order;
             $section_content_order->title = $request->title;
+            $section_content_order->is_unlock = $request->is_unlock;
     
             $section_content_order->save();
         }

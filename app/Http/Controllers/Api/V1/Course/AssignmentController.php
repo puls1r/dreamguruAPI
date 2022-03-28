@@ -43,6 +43,7 @@ class AssignmentController extends Controller
         $section_content_order->course_section_id = $assignment->course_section_id;
         $section_content_order->content_id = $assignment->slug;
         $section_content_order->title = $assignment->title;
+        $section_content_order->is_unlock = $assignment->is_unlock;
         $section_content_order->endpoint = 'assignments';
         $section_content_order->order = SectionContentOrder::where('course_section_id', $assignment->course_section_id)->max('order') + 1;
 
@@ -73,6 +74,7 @@ class AssignmentController extends Controller
             $section_content_order = SectionContentOrder::findOrFail('course_section_id', $assignment->course_section_id);
             $section_content_order->order = $request->order;
             $section_content_order->title = $request->title;
+            $section_content_order->is_unlock = $request->is_unlock;
     
             $section_content_order->save();
         }
