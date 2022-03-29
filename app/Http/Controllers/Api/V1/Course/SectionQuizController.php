@@ -12,9 +12,9 @@ use App\Models\SectionContentOrder;
 class SectionQuizController extends Controller
 {
     public function show($section_quiz_id){
-        $section_quiz = SectionQuiz::with('quiz.questions')->find($section_quiz_id);
+        $section_quiz = SectionQuiz::with('quiz.questions.answers')->find($section_quiz_id);
         if(!$section_quiz){                          //gunakan slug untuk mengidentifikasi model
-            $section_quiz = SectionQuiz::with('quiz.questions')->where('slug', $section_quiz_id)->firstOrFail();
+            $section_quiz = SectionQuiz::with('quiz.questions.answers')->where('slug', $section_quiz_id)->firstOrFail();
         }
 
         return response($section_quiz);
