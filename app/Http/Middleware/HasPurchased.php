@@ -24,7 +24,10 @@ class HasPurchased
         if(Auth::user()->role == 'student'){
             foreach($params as $param => $value){
                 if($param == 'part_id'){
-                    $part = SectionPart::with('course_section')->findOrFail($value);
+                    $part = SectionPart::with('course_section')->find($value);
+                    if(!$part){                          //gunakan slug untuk mengidentifikasi model
+                        $part = SectionPart::where('slug', $value)->firstOrFail();
+                    }
                     $course_id = $part->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
                     
@@ -35,7 +38,10 @@ class HasPurchased
                 }
 
                 else if($param == 'assignment_id'){
-                    $assignment = Assignment::with('course_section')->findOrFail($value);
+                    $assignment = Assignment::with('course_section')->find($value);
+                    if(!$assignment){                          //gunakan slug untuk mengidentifikasi model
+                        $assignment = Assignment::where('slug', $value)->firstOrFail();
+                    }
                     $course_id = $assignment->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
                     
@@ -46,7 +52,10 @@ class HasPurchased
                 }
 
                 else if($param == 'discussion_id'){
-                    $discussion = SectionDiscussion::with('course_section')->findOrFail($value);
+                    $discussion = SectionDiscussion::with('course_section')->find($value);
+                    if(!$discussion){                          //gunakan slug untuk mengidentifikasi model
+                        $discussion = SectionDiscussion::where('slug', $value)->firstOrFail();
+                    }
                     $course_id = $discussion->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
                     
@@ -57,7 +66,10 @@ class HasPurchased
                 }
 
                 else if($param == 'section_quiz_id'){
-                    $section_quiz = SectionQuiz::with('course_section')->findOrFail($value);
+                    $section_quiz = SectionQuiz::with('course_section')->find($value);
+                    if(!$section_quiz){                          //gunakan slug untuk mengidentifikasi model
+                        $section_quiz = SectionQuiz::where('slug', $value)->firstOrFail();
+                    }
                     $course_id = $section_quiz->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
                     

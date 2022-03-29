@@ -15,7 +15,7 @@ class SectionPartController extends Controller
         $part = SectionPart::find($part_id);
         
         if(!$part){                          //gunakan slug untuk mengidentifikasi model
-            $part = SectionPart::where('slug', $part_id)->first();
+            $part = SectionPart::where('slug', $part_id)->firstOrFail();
         }
 
         return response($part);
