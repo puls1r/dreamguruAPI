@@ -12,7 +12,7 @@ use App\Models\SectionContentOrder;
 class AssignmentController extends Controller
 {
     public function show($assignment_id){
-        $assignment = Assignment::findOrFail($assignment_id);
+        $assignment = Assignment::find($assignment_id);
         if(!$assignment){                          //gunakan slug untuk mengidentifikasi model
             $assignment = Assignment::where('slug', $assignment)->firstOrFail();
         }
