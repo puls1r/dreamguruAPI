@@ -14,7 +14,7 @@ class SectionQuizController extends Controller
     public function show($section_quiz_id){
         $section_quiz = SectionQuiz::with('quiz')->find($section_quiz_id);
         if(!$section_quiz){                          //gunakan slug untuk mengidentifikasi model
-            $section_quiz = SectionQuiz::where('slug', $section_quiz_id)->firstOrFail();
+            $section_quiz = SectionQuiz::with('quiz')->where('slug', $section_quiz_id)->firstOrFail();
         }
 
         return response($section_quiz);
@@ -24,6 +24,7 @@ class SectionQuizController extends Controller
         $this->validate($request, [
             'quiz_id' => ['required', 'exists:quizzes,id'],
             'title' => ['required', 'string'],
+            'desc' => ['required', 'string'],
             'max_attempt' => ['required', 'numeric'],
             'is_unlock' => ['required', 'numeric', 'in:0,1'],
         ]);
@@ -34,6 +35,7 @@ class SectionQuizController extends Controller
         $section_quiz->quiz_id = $request->quiz_id;
         $section_quiz->title = $request->title;
         $section_quiz->max_attempt = $request->max_attempt;
+        $section_quiz->desc = $request->desc;
         $section_quiz->status = 'draft';
 
         if(!$section_quiz->save()){
