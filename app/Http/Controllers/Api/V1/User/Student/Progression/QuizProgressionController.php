@@ -29,6 +29,8 @@ class QuizProgressionController extends Controller
         $user_quiz->section_quiz_id = $section_quiz_id;
         $user_quiz->user_id = Auth::id();
         $user_quiz->user_score = 0;
+        $user_quiz->time_spent = 0;
+        $user_quiz->attempt = 1;
         $user_quiz->status = 'in_progress';
 
         $user_quiz->save();
@@ -92,5 +94,19 @@ class QuizProgressionController extends Controller
         $user_quiz->user_score = $total_points;
         $user_quiz->save();
         return response($user_quiz);
+    }
+
+    public function pauseQuiz(Request $request, $user_quiz_id){
+        //check user
+        if($user_id != Auth::id()){
+            return response('forbidden', 403);
+        }
+
+        $user_quiz = UserQuiz::findOrFail($user_quiz_id);
+        $user_quiz->attempt += 1;
+        $user_quiz->time_spent = $request->time_spent;
+
+        $user_quiz->save();
+        return response('progress saved!');
     }
 }

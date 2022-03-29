@@ -20,6 +20,7 @@ class CreateSectionQuizzesTable extends Migration
             $table->unsignedBigInteger('quiz_id');
             $table->foreign('quiz_id')->references('id')->on('quizzes');
             $table->string('title');
+            $table->smallInteger('max_attempt')->unsigned()->nullable();
             $table->string('slug')->unique()->nullable();
             $table->string('status');  //completed, draft, archived
             $table->timestamps();

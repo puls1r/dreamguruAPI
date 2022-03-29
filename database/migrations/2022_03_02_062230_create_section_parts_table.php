@@ -21,6 +21,7 @@ class CreateSectionPartsTable extends Migration
             $table->text('text')->nullable();
             $table->string('picture')->nullable();
             $table->string('video')->nullable();
+            $table->unsignedInteger('estimated_time')->nullable();
             $table->boolean('is_unlock');       //untuk parts yang dibuka secara gratis
             $table->string('slug')->unique()->nullable();
             $table->string('status');       //completed, draft, archived

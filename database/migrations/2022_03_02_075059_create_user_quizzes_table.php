@@ -19,6 +19,8 @@ class CreateUserQuizzesTable extends Migration
             $table->foreign('section_quiz_id')->references('id')->on('section_quizzes');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('time_spent')->nullable();
+            $table->smallInteger('attempts')->unsigned()->nullable();
             $table->string('user_score');
             $table->string('status');       //completed, in progress, expired
             $table->timestamps();

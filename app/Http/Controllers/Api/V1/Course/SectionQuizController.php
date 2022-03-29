@@ -24,6 +24,7 @@ class SectionQuizController extends Controller
         $this->validate($request, [
             'quiz_id' => ['required', 'exists:quizzes,id'],
             'title' => ['required', 'string'],
+            'max_attempt' => ['required', 'numeric'],
         ]);
 
         $section = CourseSection::findOrFail($section_id);
@@ -31,6 +32,7 @@ class SectionQuizController extends Controller
         $section_quiz->course_section_id = $request->section_id;
         $section_quiz->quiz_id = $request->quiz_id;
         $section_quiz->title = $request->title;
+        $section_quiz->max_attempt = $request->max_attempt;
         $section_quiz->status = 'draft';
 
         if(!$section_quiz->save()){
@@ -55,12 +57,19 @@ class SectionQuizController extends Controller
             'quiz_id' => ['exists:quizzes'],
             'title' => ['string'],
             'order' => ['numeric'],
+            'max_attempt' => ['numeric'],
             'status' => ['in:draft,completed'],
         ]);
 
         //check apakah sudah ada user yang mengerjakan quiz
         $section_quiz = SectionQuiz::findOrFail($section_quiz_id);
         if($section_quiz->user_quizzes()->count() > 0){
+            if(isset($request->max_attempt)){
+                $section_quiz->max_attempt = $request->max_attempt;
+                $section_quiz->save();
+
+                return response($section_quiz);
+            }
             return response('resource is currently in use and cannot be modified, contact the administrator for help', 403);
         }
 
