@@ -25,6 +25,7 @@ class SectionQuizController extends Controller
             'quiz_id' => ['required', 'exists:quizzes,id'],
             'title' => ['required', 'string'],
             'max_attempt' => ['required', 'numeric'],
+            'is_unlock' => ['required', 'numeric', 'in:0,1'],
         ]);
 
         $section = CourseSection::findOrFail($section_id);
@@ -33,6 +34,7 @@ class SectionQuizController extends Controller
         $section_quiz->quiz_id = $request->quiz_id;
         $section_quiz->title = $request->title;
         $section_quiz->max_attempt = $request->max_attempt;
+        $section_quiz->is_unlock = $request->is_unlock;
         $section_quiz->status = 'draft';
 
         if(!$section_quiz->save()){
@@ -58,6 +60,7 @@ class SectionQuizController extends Controller
             'title' => ['string'],
             'order' => ['numeric'],
             'max_attempt' => ['numeric'],
+            'is_unlock' => ['numeric', 'in:0,1'],
             'status' => ['in:draft,completed'],
         ]);
 
