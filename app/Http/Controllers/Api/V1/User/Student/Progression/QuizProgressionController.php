@@ -30,7 +30,7 @@ class QuizProgressionController extends Controller
         $user_quiz->user_id = Auth::id();
         $user_quiz->user_score = 0;
         $user_quiz->time_spent = 0;
-        $user_quiz->attempt = 1;
+        $user_quiz->attempts = 1;
         $user_quiz->status = 'in_progress';
 
         $user_quiz->save();
@@ -44,21 +44,50 @@ class QuizProgressionController extends Controller
         }
 
         $user_quiz = UserQuiz::findOrFail($user_quiz_id);
-        foreach($request->input() as $data){
+        
+        $user_quiz_question = UserQuizQuestion::where('user_quiz_id', $user_quiz_id)->where('question_id', $request->question_id)->first();
+        
+        if(!$user_quiz_question){
             $user_quiz_question = new UserQuizQuestion;
             $user_quiz_question->user_quiz_id = $user_quiz_id;
-            $user_quiz_question->question_id = $data['question_id'];
+            $user_quiz_question->question_id = $request->question_id;
             $user_quiz_question->point = 0;
             $user_quiz_question->is_true = 0;
-            $user_quiz_question->save();
 
-            foreach($data['answers'] as $answer){
+            $user_quiz_question->save();
+            
+            foreach($request->answers as $answer){
                 $user_quiz_answer = new UserQuizQuestionAnswer;
                 $user_quiz_answer->user_quiz_question_id = $user_quiz_question->id;
                 $user_quiz_answer->answer = $answer['answer'];
                 $user_quiz_answer->save();
             }
         }
+        else{
+            $user_quiz_answers = UserQuizQuestionAnswer::where('user_quiz_question_id', $user_quiz_question->id)->get();
+            
+            foreach($user_quiz_answers as $answer){
+                $answer->delete();
+            }
+
+            foreach($request->answers as $answer){
+                $user_quiz_answer = new UserQuizQuestionAnswer;
+                $user_quiz_answer->user_quiz_question_id = $user_quiz_question->id;
+                $user_quiz_answer->answer = $answer['answer'];
+                $user_quiz_answer->save();
+            }
+        }
+        
+        return response('progress saved!', 201);
+    }
+
+    public function finishQuiz(Request $request, $user_id, $user_quiz_id){
+        //check user
+        if($user_id != Auth::id()){
+            return response('forbidden', 403);
+        }
+
+        $user_quiz = UserQuiz::findOrFail($user_quiz_id);
 
         $user_quiz->status = 'completed';
         $user_quiz->save();

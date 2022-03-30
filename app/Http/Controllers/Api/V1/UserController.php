@@ -22,10 +22,10 @@ class UserController extends Controller
     public function updateProfile(Request $request){
         
         $this->validate($request, [
-            'name' => ['required', 'string', 'max:100'],
-            'phone_number' => [ 'required', 'between:10,16', Rule::unique(UserProfile::class)->ignore(Auth::id(), 'user_id')],
-            'date_of_birth' => ['required', 'date'],
-            'gender' => ['required', 'string', 'in:male,female'],
+            'name' => ['string', 'max:100'],
+            'phone_number' => [ 'between:10,16', Rule::unique(UserProfile::class)->ignore(Auth::id(), 'user_id')],
+            'date_of_birth' => ['date'],
+            'gender' => ['string', 'in:male,female'],
             'address' => ['string', 'max:255'],
             'avatar' => ['file', 'max:1024', 'mimes:jpg,jpeg,png'],
             'current_password' => ['required', new MatchOldPassword],
