@@ -14,7 +14,7 @@ use App\Rules\MatchOldPassword;
 class UserController extends Controller
 {
     public function show(){
-        $user = User::find(Auth::id())->with('profile')->first();
+        $user = User::with('profile')->where('id', Auth::id())->first();
 
         return (new UserResource($user));
     }
