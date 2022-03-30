@@ -61,6 +61,7 @@ Route::prefix('v1')->group(function () {
                 Route::post('/{quiz_id}/answers', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'storeAnswer'])->middleware('auth:sanctum');
                 Route::post('/{quiz_id}/done', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'finishQuiz'])->middleware('auth:sanctum');
             });
+            Route::get('/section-quizzes/{section_quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'showUsingSectionQuiz'])->middleware('auth:sanctum');
         });
     });
  
@@ -153,7 +154,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{question_id}/answers/{answer_id}', [App\Http\Controllers\Api\V1\Quiz\QuestionController::class, 'deleteAnswer'])->middleware(['auth:sanctum', 'role:teacher,admin']);
     });
 
-    Route::prefix('section_quizzes')->group(function (){
+    Route::prefix('section-quizzes')->group(function (){
         Route::get('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'show'])->middleware('auth:sanctum');
         Route::put('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::delete('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'delete'])->middleware(['auth:sanctum', 'role:teacher,admin']);
