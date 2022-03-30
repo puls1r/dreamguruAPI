@@ -32,12 +32,13 @@ class UserController extends Controller
         ]);
 
         $user_profile = UserProfile::where('user_id', Auth::id())->first();
-        $user_profile->name = $request->name;
-        $user_profile->gender = $request->gender;
-        $user_profile->address = $request->address;
-        $user_profile->date_of_birth = $request->date_of_birth;
-        $user_profile->phone_number = $request->phone_number;
-        $user_profile->avatar = $request->avatar;
+        foreach($request->input() as $field => $value){
+            if($field == 'current_password'){
+                continue;
+            }
+            $user_profile->{$field} = $request->{$field};
+            
+        }
 
         if(!$user_profile->save()){
             return response('data saving failed', 500);
