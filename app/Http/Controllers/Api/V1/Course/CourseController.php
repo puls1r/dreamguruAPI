@@ -82,7 +82,7 @@ class CourseController extends Controller
             'price' => ['numeric'],
             'desc' => ['string'],
             'level' => ['string', 'in:Beginner,Intermediate,Advanced'],
-            'estimated_time' => ['date_format:H:i'],
+            'estimated_time' => ['date_format:H:i:s,H:i'],
             'language' => ['string', 'max:25'],
             'category_id' => ['exists:categories,id'],
             'trailer' => ['string', 'max:255'],
