@@ -28,16 +28,11 @@ class UserController extends Controller
             'gender' => ['string', 'in:male,female'],
             'address' => ['string', 'max:255'],
             'avatar' => ['file', 'max:1024', 'mimes:jpg,jpeg,png'],
-            'current_password' => ['required', new MatchOldPassword],
         ]);
 
         $user_profile = UserProfile::where('user_id', Auth::id())->first();
         foreach($request->input() as $field => $value){
-            if($field == 'current_password'){
-                continue;
-            }
-            $user_profile->{$field} = $request->{$field};
-            
+            $user_profile->{$field} = $request->{$field};   
         }
 
         if(!$user_profile->save()){
