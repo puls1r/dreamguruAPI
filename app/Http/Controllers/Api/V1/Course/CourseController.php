@@ -21,8 +21,16 @@ class CourseController extends Controller
         return response(new CourseCollection($courses));
     }
 
-    public function showTeacherCourse($course_id){
-        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->where('teacher_id', Auth::id())->firstOrFail();
+    public function showTeacherCourse($course_id, $teacher_id){
+        // check if user is admin
+        if(!Auth::user()->role == 'admin'){
+            //check if user is owner
+            if(Auth::id() != Course::findOrFail($course_id)->teacher_id){
+                return response('forbidden',403);
+            }
+        }
+
+        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->where('teacher_id', $teacher_id)->firstOrFail();
        
         $course->total_students = UserCourse::where('course_id', $course_id)->count();
         return response(new CourseResource($course));
