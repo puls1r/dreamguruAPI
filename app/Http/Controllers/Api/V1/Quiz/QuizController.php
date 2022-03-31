@@ -11,8 +11,13 @@ use App\Models\Quiz;
 class QuizController extends Controller
 {
     public function index(){
-        $quiz = Quiz::where('user_id', Auth::id())->get();
-        return response($quiz);
+        $quizzes = Quiz::with('questions')->where('user_id', Auth::id())->get();
+        foreach($quizzes as $quiz){
+            $total_question = count($quiz->questions);
+            $quiz->total_question = $total_question;
+        }
+
+        return response($quizzes);
     }
 
     public function show($quiz_id)
