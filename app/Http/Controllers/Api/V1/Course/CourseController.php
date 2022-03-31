@@ -23,12 +23,16 @@ class CourseController extends Controller
 
     public function show($course_id){
         $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->firstOrFail();
+        if(Auth::id() == $course->teacher_id || Auth::user()->role == 'admin'){
+            $course->total_students = UserCourse::where('course_id', $course_id)->count();
+            return response(new CourseResource($course));
+        }
+
         if($course->status == 'draft'){
             return response('course is not yet available!', 403);
         }
         
         $course->total_students = UserCourse::where('course_id', $course_id)->count();
-
         return response(new CourseResource($course));
     }
 
