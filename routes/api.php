@@ -139,6 +139,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('quizzes')->group(function (){
+        Route::get('/', [App\Http\Controllers\Api\V1\Quiz\QuizController::class, 'index'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::post('/', [App\Http\Controllers\Api\V1\Quiz\QuizController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::prefix('/{quiz_id}')->group(function(){
             Route::get('/', [App\Http\Controllers\Api\V1\Quiz\QuizController::class, 'show'])->middleware('auth:sanctum');

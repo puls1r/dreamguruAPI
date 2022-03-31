@@ -12,4 +12,8 @@ class Quiz extends Model
     public function questions(){
         return $this->belongsToMany(Question::class, 'quiz_questions')->withPivot('order');
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

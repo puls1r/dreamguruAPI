@@ -10,9 +10,14 @@ use App\Models\Quiz;
 
 class QuizController extends Controller
 {
+    public function index(){
+        $quiz = Quiz::where('user_id', Auth::id())->get();
+        return response($quiz);
+    }
+
     public function show($quiz_id)
     {
-        $quiz = Quiz::with('questions.answers')->findOrFail($quiz_id);
+        $quiz = Quiz::with('questions.answers', 'user')->findOrFail($quiz_id);
 
         foreach ($quiz->questions as $question) {
             $question->pivot->order;
@@ -31,6 +36,7 @@ class QuizController extends Controller
         $quiz->title = $request->title;
         $quiz->time_limit = $request->time_limit;
         $quiz->status = 'draft';
+        $quiz->user_id = Auth::id();
 
         if(!$quiz->save()){
             return response('quiz creation failed!', 500);
