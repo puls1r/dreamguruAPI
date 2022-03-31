@@ -12,7 +12,7 @@ class QuizController extends Controller
 {
     public function show($quiz_id)
     {
-        $quiz = Quiz::findOrFail($quiz_id);
+        $quiz = Quiz::with('questions.answers')->findOrFail($quiz_id);
 
         foreach ($quiz->questions as $question) {
             $question->pivot->order;
