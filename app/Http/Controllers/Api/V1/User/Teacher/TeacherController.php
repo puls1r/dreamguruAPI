@@ -16,22 +16,22 @@ class TeacherController extends Controller
     }
 
     public function show($teacher_id){
-        $user = User::where('id', '=', $teacher_id)->where('role', '=', 'teacher')->with('profile')->firstOrFail();
+        $user = User::with('teacher')->where('id', '=', $teacher_id)->where('role', '=', 'teacher')->with('profile')->firstOrFail();
         return (new UserResource($user));
     }
 
     public function getCourses($teacher_id){
-        $courses = Course::where('teacher_id', '=', $teacher_id)->where('status', '=', 'completed')->get();
+        $courses = Course::with('teacher')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'completed')->get();
         return response($courses);
     }
 
     public function getDraftCourses($teacher_id){
-        $courses = Course::where('teacher_id', '=', $teacher_id)->where('status', '=', 'draft')->get();
+        $courses = Course::with('teacher')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'draft')->get();
         return response($courses);
     }
 
     public function getArchivedCourses($teacher_id){
-        $courses = Course::where('teacher_id', '=', $teacher_id)->where('status', '=', 'archived')->get();
+        $courses = Course::with('teacher')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'archived')->get();
         return response($courses);
     }
 }
