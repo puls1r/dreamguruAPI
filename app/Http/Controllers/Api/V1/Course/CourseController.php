@@ -21,13 +21,16 @@ class CourseController extends Controller
         return response(new CourseCollection($courses));
     }
 
+    public function showTeacherCourse($course_id){
+        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->where('teacher_id', Auth::id())->firstOrFail();
+       
+        $course->total_students = UserCourse::where('course_id', $course_id)->count();
+        return response(new CourseResource($course));
+    }
+
     public function show($course_id){
         $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->firstOrFail();
-        if(Auth::id() == $course->teacher_id || Auth::user()->role == 'admin'){
-            $course->total_students = UserCourse::where('course_id', $course_id)->count();
-            return response(new CourseResource($course));
-        }
-
+       
         if($course->status == 'draft'){
             return response('course is not yet available!', 403);
         }

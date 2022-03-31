@@ -73,6 +73,7 @@ Route::prefix('v1')->group(function () {
                 Route::get('/', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'getCourses']);
                 Route::get('/draft', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'getDraftCourses'])->middleware(['auth:sanctum', 'role:teacher,admin']);
                 Route::get('/archived', [App\Http\Controllers\Api\V1\User\Teacher\TeacherController::class, 'getArchivedCourses'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+                Route::get('/{course_id}', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'showTeacherCourse'])->middleware(['auth:sanctum', 'role:teacher,admin']);
                 
             });
         });
