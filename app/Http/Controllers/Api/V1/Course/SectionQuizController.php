@@ -85,12 +85,11 @@ class SectionQuizController extends Controller
             return response('section_quiz update failed!', 500);
         }
 
-        if(isset($request->order)){
+        if(isset($request->order) || isset($request->title) || isset($request->is_unlock)){
             $section_content_order = SectionContentOrder::findOrFail('course_section_id', $section_quiz->course_section_id);
-            $section_content_order->order = $request->order;
-            $section_content_order->title = $request->title;
-            $section_content_order->is_unlock = $request->is_unlock;
-    
+            isset($request->order) ? $section_content_order->order = $request->order : '';
+            isset($request->title) ? $section_content_order->title = $request->title : '';
+            isset($request->is_unlock) ? $section_content_order->is_unlock = $request->is_unlock : '';
             $section_content_order->save();
         }
         
