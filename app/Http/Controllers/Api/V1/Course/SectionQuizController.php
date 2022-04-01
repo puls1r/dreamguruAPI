@@ -78,6 +78,9 @@ class SectionQuizController extends Controller
         }
 
         foreach($request->input() as $field => $value){
+            if($field == 'order'){
+                continue;
+            }
             $section_quiz->{$field} = $request->{$field};
         }
 
@@ -86,13 +89,13 @@ class SectionQuizController extends Controller
         }
 
         if(isset($request->order) || isset($request->title) || isset($request->is_unlock)){
-            $section_content_order = SectionContentOrder::findOrFail('course_section_id', $section_quiz->course_section_id);
+            $section_content_order = SectionContentOrder::where('course_section_id', $part->course_section_id)->firstOrFail();
             isset($request->order) ? $section_content_order->order = $request->order : '';
             isset($request->title) ? $section_content_order->title = $request->title : '';
             isset($request->is_unlock) ? $section_content_order->is_unlock = $request->is_unlock : '';
             $section_content_order->save();
         }
-        
+
         return response($section_quiz);
     }
 
