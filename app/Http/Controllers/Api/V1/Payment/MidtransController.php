@@ -40,7 +40,7 @@ class MidtransController extends Controller
             ),
             'item_details' => array(
                 array(
-                    'id' => 'course-'. $transaction->course_id,
+                    'id' => $transaction->course_id,
                     'price' => $transaction->final_amount,
                     'quantity' => 1,
                     'name' => $data_payment['course_details']['title'],
@@ -62,7 +62,7 @@ class MidtransController extends Controller
             )
         );
          
-        $chargeData = \Midtrans\CoreApi::charge($params)->status;
+        $chargeData = \Midtrans\CoreApi::charge($params);
         
         $transaction->charge_id = $chargeData->transaction_id;
         $transaction->status = $chargeData->transaction_status;
@@ -253,8 +253,8 @@ class MidtransController extends Controller
         $params = array(
             "payment_type" => "echannel",
             "transaction_details" => array(
-                'order_id' => $payment->order_id,
-                'gross_amount' => $payment->amount,
+                'order_id' => $transaction->order_id,
+                'gross_amount' => $transaction->amount,
             ),
             "echannel" => array(
                 "bill_info1" => "Payment:",

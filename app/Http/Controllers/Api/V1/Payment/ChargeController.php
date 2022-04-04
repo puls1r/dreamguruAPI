@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Payment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Course;
 use App\Http\Controllers\Api\V1\Payment\XenditController;
 use App\Http\Controllers\Api\V1\Payment\MidtransController;
@@ -24,7 +25,7 @@ class ChargeController extends Controller
         //step 4 : charge
         switch($data_payment['payment_type']){
             case "credit_card":
-                $this->validate($data_payment, [
+                Validator::make($data_payment, [
                     "first_name" => ['required', 'string', 'max:30'],
                     "last_name" => ['required', 'string', 'max:30'],
                     "address" => ['required', 'string', 'max:100'],
@@ -34,7 +35,7 @@ class ChargeController extends Controller
                 ]);
 
                 $data_payment['api_key'] = $this->midtrans_key;
-                MidtransController::chargeCard($data_payment);
+                return response(MidtransController::chargeCard($data_payment));
             case "mandiriVA":
                 $data_payment['api_key'] = $this->midtrans_key;
                 return response(MidtransController::chargeMandiriVA($data_payment));

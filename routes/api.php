@@ -176,5 +176,4 @@ Route::prefix('v1')->group(function () {
 
     //Midtrans Callback
     Route::post('/callback/midtrans/payment/status', [App\Http\Controllers\Api\V1\Callback\MidtransCallbackController::class, 'paymentStatus']);
-    Route::post('/callback/midtrans/card/checkout/status', [App\Http\Controllers\Api\V1\Callback\MidtransCallbackController::class, 'cardPaymentStatus']);
 });
