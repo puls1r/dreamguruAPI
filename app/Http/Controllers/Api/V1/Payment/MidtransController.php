@@ -47,17 +47,17 @@ class MidtransController extends Controller
                 )
             ),
             'customer_details' => array(
-                'first_name' => $data_payment->first_name,
-                'last_name' => $data_payment->last_name,
+                'first_name' => $data_payment['first_name'],
+                'last_name' => $data_payment['last_name'],
                 'email' => Auth::user()->email,
                 'billing_address' => array(
-                    'first_name' => $data_payment->first_name,
-                    'last_name' => $data_payment->last_name,
+                    'first_name' => $data_payment['first_name'],
+                    'last_name' => $data_payment['last_name'],
                     'email' => Auth::user()->email,
-                    'address' => $data_payment->address,
-                    'city' => $data_payment->city,
-                    'postal_code' => $data_payment->postal_code,
-                    'country_code' => $data_payment->country_code,
+                    'address' => $data_payment['address'],
+                    'city' => $data_payment['city'],
+                    'postal_code' => $data_payment['postal_code'],
+                    'country_code' => $data_payment['country_code'],
                 ),
             )
         );
@@ -117,6 +117,7 @@ class MidtransController extends Controller
         $transaction->save();
 
         $chargeData = json_decode(json_encode($chargeData), true);
+        
         return $chargeData;
     }
 
