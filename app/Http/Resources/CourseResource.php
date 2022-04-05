@@ -31,6 +31,7 @@ class CourseResource extends JsonResource
             "status"=> $this->status,
             "is_on_discount"=> $this->is_on_discount,
             "discount_price"=> $this->discount_price,
+            "slug"=> $this->slug,
             "created_at"=> $this->created_at,
             "updated_at"=> $this->updated_at,
             "teacher" => $this->whenLoaded('teacher'),

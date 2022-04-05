@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1\Course;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseCollection;
@@ -37,8 +39,12 @@ class CourseController extends Controller
     }
 
     public function show($course_id){
-        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->firstOrFail();
-       
+        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->first();
+        
+        if(!$course){                          //gunakan slug untuk mengidentifikasi model
+            $course = Course::where('slug', $course_id)->firstOrFail();
+        }
+
         if($course->status == 'draft'){
             return response('course is not yet available!', 403);
         }
@@ -75,6 +81,20 @@ class CourseController extends Controller
         $course->status = 'draft';
         $course->discount_price = 0;
         $course->is_on_discount = 0;
+        $course->slug = Str::slug($course->title, '-');
+
+        $validate = Validator::make($course->toArray(), [
+            'slug' => ['unique:courses']
+        ]);
+
+        if($validate->fails()){
+            while($validate->fails()){
+                $course->slug = Str::slug($course->title . ' ' . Str::random(4), '-');
+                $validate = Validator::make($course->toArray(), [
+                    'slug' => ['unique:courses']
+                ]);
+            }
+        }
 
         if(!$course->save()){
             return response('course creation failed!', 500);
@@ -111,6 +131,21 @@ class CourseController extends Controller
         $course = Course::findOrFail($course_id);
         foreach($request->input() as $field => $value){
             $course->{$field} = $request->{$field};
+            if($field == 'title'){
+                $course->slug = Str::slug($course->title, '-');
+                $validate = Validator::make($course->toArray(), [
+                    'slug' => ['unique:courses']
+                ]);
+
+                if($validate->fails()){
+                    while($validate->fails()){
+                        $course->slug = Str::slug($course->title . ' ' . Str::random(4), '-');
+                        $validate = Validator::make($course->toArray(), [
+                            'slug' => ['unique:courses']
+                        ]);
+                    }
+                }
+            }
         }
 
         if(!$course->save()){

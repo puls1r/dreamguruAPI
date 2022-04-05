@@ -31,6 +31,7 @@ class CreateCoursesTable extends Migration
             $table->string('status');       //completed, draft, archived
             $table->boolean('is_on_discount');
             $table->integer('discount_price')->unsigned()->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
