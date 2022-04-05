@@ -19,7 +19,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => [ 'required', 'string', 'max:25', Rule::unique(User::class),],
             'email' => [ 'required', 'string', 'email', 'max:255', Rule::unique(User::class),],
-            'phone_number' => [ 'required', 'size:11', Rule::unique(UserProfile::class),],
+            'phone_number' => [ 'required', 'digits_between:10,13', Rule::unique(UserProfile::class),],
             'password' => ['required','confirmed','min:8'],
             'date_of_birth' => ['required', 'date'],
             'gender' => ['required', 'string'],

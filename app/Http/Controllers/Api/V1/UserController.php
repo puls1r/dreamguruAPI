@@ -23,7 +23,7 @@ class UserController extends Controller
         
         $this->validate($request, [
             'name' => ['string', 'max:100'],
-            'phone_number' => [ 'between:10,16', Rule::unique(UserProfile::class)->ignore(Auth::id(), 'user_id')],
+            'phone_number' => [ 'digits_between:10,13', Rule::unique(UserProfile::class)->ignore(Auth::id(), 'user_id')],
             'date_of_birth' => ['date'],
             'gender' => ['string', 'in:male,female'],
             'address' => ['string', 'max:255'],
