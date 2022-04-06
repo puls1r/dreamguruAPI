@@ -20,7 +20,7 @@ class TransactionController extends Controller
         $transaction = Transaction::where('order_id', $order_id)->firstOrFail();
         
         //get transaction detail from payment gateway
-        if($transaction->gateway == 'Midtrans'){
+        if($transaction->gateway == 'midtrans'){
             \Midtrans\Config::$serverKey = 'SB-Mid-server-Z0WqZ60NiCXVrKeoKr0D3miW';
             \Midtrans\Config::$isProduction = false;
 
