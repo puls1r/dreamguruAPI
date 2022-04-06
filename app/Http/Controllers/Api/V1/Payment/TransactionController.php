@@ -29,8 +29,8 @@ class TransactionController extends Controller
             if(isset($status['va_numbers'])){
                 $transaction->va_number = $status['va_numbers'][0]['va_number'];
             }
-            else if(isset($status['biller_key'])){
-                $transaction->va_number = $status['biller_key'];
+            else if(isset($status['bill_key'])){
+                $transaction->va_number = $status['bill_key'];
                 $transaction->biller_code = $status['biller_code'];
             }
             else if(isset($status['permata_va_number'])){
