@@ -20,7 +20,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'credit_card';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
@@ -80,7 +80,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'gopay';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
@@ -130,7 +130,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
@@ -173,7 +173,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
@@ -210,7 +210,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
@@ -247,7 +247,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'echannel';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
@@ -285,7 +285,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
-        $transaction->due_date = date('Y-m-d H:i:s', strtotime('tomorrow'));
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
