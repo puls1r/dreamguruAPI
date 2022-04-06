@@ -18,7 +18,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'credit_card';
@@ -78,7 +77,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'gopay';
@@ -128,7 +126,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->bank = 'bni';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
@@ -172,7 +169,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->bank = 'bca';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
@@ -210,7 +206,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->bank = 'bri';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
@@ -248,7 +243,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->bank = 'mandiri';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
@@ -287,7 +281,6 @@ class MidtransController extends Controller
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
         $transaction->bank = 'permata';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));

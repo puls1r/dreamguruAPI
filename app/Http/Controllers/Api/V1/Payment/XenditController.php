@@ -20,12 +20,12 @@ class XenditController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Xendit';
-        $transaction->payment_type = 'Dana eWallet';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->course_id = $data_payment['course_details']['id'];
+        $transaction->gateway = 'xendit';
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
+        $transaction->payment_type = 'dana';
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -61,12 +61,12 @@ class XenditController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Xendit';
-        $transaction->payment_type = 'LinkAja eWallet';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->course_id = $data_payment['course_details']['id'];
+        $transaction->gateway = 'xendit';
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
+        $transaction->payment_type = 'linkAja';
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -101,12 +101,12 @@ class XenditController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Xendit';
-        $transaction->payment_type = 'ShopeePay eWallet';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->course_id = $data_payment['course_details']['id'];
+        $transaction->gateway = 'xendit';
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
+        $transaction->payment_type = 'shopeePay';
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -139,12 +139,12 @@ class XenditController extends Controller
         
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Xendit';
-        $transaction->payment_type = 'OVO';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->course_id = $data_payment['course_details']['id'];
+        $transaction->gateway = 'xendit';
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
+        $transaction->payment_type = 'ovo';
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -184,12 +184,12 @@ class XenditController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Xendit';
-        $transaction->payment_type = 'Alfamart';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->course_id = $data_payment['course_details']['id'];
+        $transaction->gateway = 'xendit';
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
+        $transaction->payment_type = 'alfamart';
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -216,12 +216,12 @@ class XenditController extends Controller
 
         $transaction = new Transaction;
         $transaction->user_id = Auth::id();
-        $transaction->course_id = $data_payment['course_id'];
-        $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Xendit';
-        $transaction->payment_type = 'Indomaret';
-        $transaction->amount = $data_payment['course_price'];
-        $transaction->final_amount = $data_payment['course_price'];
+        $transaction->course_id = $data_payment['course_details']['id'];
+        $transaction->gateway = 'xendit';
+        $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
+        $transaction->payment_type = 'indomaret';
+        $transaction->amount = $data_payment['course_details']['price'];
+        $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
         $transaction->save();
 

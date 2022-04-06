@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Transaction;
+use Xendit\Xendit;
 
 class TransactionController extends Controller
 {
@@ -39,6 +40,16 @@ class TransactionController extends Controller
             else{
                 $transaction->details = $status;
             }
+
+            return response($transaction);
+        }
+
+        else{
+            Xendit::setApiKey('xnd_development_P4qDfOss0OCpl8RtKrROHjaQYNCk9dN5lSfk+R1l9Wbe+rSiCwZ3jw==');
+
+            $status = \Xendit\EWallets::getEWalletChargeStatus($transaction->charge_id);
+            $status = json_decode(json_encode($status) , true);
+            $transaction->details = $status;
 
             return response($transaction);
         }
