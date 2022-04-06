@@ -83,6 +83,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/self', [App\Http\Controllers\Api\V1\UserController::class, 'show'])->middleware(['auth:sanctum']);
         Route::put('/self/security', [App\Http\Controllers\Api\V1\UserController::class, 'updateAccountSecurity'])->middleware(['auth:sanctum']);
         Route::put('/self/profile', [App\Http\Controllers\Api\V1\UserController::class, 'updateProfile'])->middleware(['auth:sanctum']);
+        Route::get('/self/transactions', [App\Http\Controllers\Api\V1\Payment\TransactionController::class, 'index'])->middleware(['auth:sanctum']);
+        Route::get('/self/transactions/{order_id}', [App\Http\Controllers\Api\V1\Payment\TransactionController::class, 'show'])->middleware(['auth:sanctum']);
     });
 
     Route::prefix('courses')->group(function(){
@@ -171,8 +173,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/charge', App\Http\Controllers\Api\V1\Payment\ChargeController::class)->middleware('auth:sanctum');
 
     //Xendit Callback
-    Route::post('/callback/xendit/ewallet/status', [App\Http\Controllers\Api\V1\Callback\XenditCallbackController::class, 'eWalletPaymentStatus'])->middleware('xendit');
-    Route::post('/callback/xendit/retail/status', [App\Http\Controllers\Api\V1\Callback\XenditCallbackController::class, 'retailPaymentStatus'])->middleware('xendit');
+    Route::post('/callback/xendit/ewallet/status', [App\Http\Controllers\Api\V1\Callback\XenditCallbackController::class, 'eWalletPaymentStatus']);
+    Route::post('/callback/xendit/retail/status', [App\Http\Controllers\Api\V1\Callback\XenditCallbackController::class, 'retailPaymentStatus']);
 
     //Midtrans Callback
     Route::post('/callback/midtrans/payment/status', [App\Http\Controllers\Api\V1\Callback\MidtransCallbackController::class, 'paymentStatus']);

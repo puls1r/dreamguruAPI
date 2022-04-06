@@ -10,9 +10,7 @@ use App\Models\Transaction;
 use App\Models\User;
 
 class MidtransController extends Controller
-{
-    private $api_key= 'SB-Mid-server-Z0WqZ60NiCXVrKeoKr0D3miW';
-    
+{   
     public function chargeCard($data_payment){
         \Midtrans\Config::$serverKey = $data_payment['api_key'];
         \Midtrans\Config::$isProduction = false;
