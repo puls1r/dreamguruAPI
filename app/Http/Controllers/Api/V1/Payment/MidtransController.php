@@ -130,6 +130,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
+        $transaction->bank = 'bni';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
@@ -173,6 +174,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
+        $transaction->bank = 'bca';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
@@ -210,6 +212,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
+        $transaction->bank = 'bri';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
@@ -247,6 +250,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
+        $transaction->bank = 'mandiri';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'echannel';
         $transaction->amount = $data_payment['course_details']['price'];
@@ -285,6 +289,7 @@ class MidtransController extends Controller
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
         $transaction->gateway = 'midtrans';
+        $transaction->bank = 'permata';
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];

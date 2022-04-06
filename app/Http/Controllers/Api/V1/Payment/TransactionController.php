@@ -26,7 +26,19 @@ class TransactionController extends Controller
 
             $status = \Midtrans\Transaction::status($order_id);
             $status = json_decode(json_encode($status) , true);
-            $transaction->details = $status;
+            if(isset($status['va_numbers'])){
+                $transaction->va_number = $status['va_numbers'][0]['va_number'];
+            }
+            else if(isset($status['biller_key'])){
+                $transaction->va_number = $status['biller_key'];
+                $transaction->biller_code = $status['biller_code'];
+            }
+            else if(isset($status['permata_va_number'])){
+                $transaction->va_number = $status['permata_va_number'];
+            }
+            else{
+                $transaction->details = $status;
+            }
 
             return response($transaction);
         }
