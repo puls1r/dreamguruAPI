@@ -124,7 +124,7 @@ class CourseController extends Controller
             'thumbnail' => ['file', 'mimes:jpg,jpeg,png', 'max:2048'],
             'hero_background' => ['file', 'mimes:jpg,jpeg,png', 'max:2048'],
             'status' => ['string', 'in:draft,archived,completed'],
-            'is_on_discount' => ['numeric', 'in:0,1'],
+            'is_on_discount' => ['boolean'],
             'discount_price' => ['numeric'],
         ]);
 

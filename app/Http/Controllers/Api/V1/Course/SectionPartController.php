@@ -28,7 +28,7 @@ class SectionPartController extends Controller
             'picture' => ['string', 'max:255'],
             'video' => ['string', 'max:255'],
             'status' => ['required','string', 'in:completed,draft'],
-            'is_unlock' => ['required','numeric', 'in:0,1'],
+            'is_unlock' => ['required','boolean'],
             'estimated_time' => ['required','numeric'],
         ]);
 
@@ -67,7 +67,7 @@ class SectionPartController extends Controller
             'video' => ['string', 'max:255'],
             'order' => ['numeric'],
             'status' => ['string', 'in:completed,draft,archived'],
-            'is_unlock' => ['numeric', 'in:0,1'],
+            'is_unlock' => ['boolean'],
             'estimated_time' => ['numeric'],
         ]);
 
