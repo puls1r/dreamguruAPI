@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses');
             $table->unsignedBigInteger('voucher_id')->nullable();
             $table->foreign('voucher_id')->references('id')->on('vouchers');
-            $table->string('order_id')->unique();
+            $table->string('order_id')->unique()->nullable();
             $table->string('charge_id')->unique()->nullable();
             $table->string('retail_payment_id')->unique()->nullable();
             $table->string('gateway');

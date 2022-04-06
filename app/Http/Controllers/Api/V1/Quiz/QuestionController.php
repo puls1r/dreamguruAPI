@@ -24,7 +24,7 @@ class QuestionController extends Controller
             'picture' => ['string'],
             'answers' => ['required', 'array', 'min:1'],
             'answers.*.answer' => ['required', 'string'],
-            'answers.*.is_true' => ['required', 'numeric', 'in:0,1'],
+            'answers.*.is_true' => ['required', 'boolean'],
         ]);
 
         $question = new Question;

@@ -19,8 +19,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'Card Payment';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'credit_card';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -78,8 +78,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'GOPAY eWallet';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'gopay';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -127,8 +127,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'BNI Virtual Account';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -169,8 +169,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'BCA Virtual Account';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -205,8 +205,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'BRIVA (BRI VIrtual Account)';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -241,8 +241,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'BCA Virtual Account';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'echannel';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -278,8 +278,8 @@ class MidtransController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->course_id = $data_payment['course_details']['id'];
         $transaction->order_id = 'DX-'.Str::random(5);
-        $transaction->gateway = 'Midtrans';
-        $transaction->payment_type = 'BCA Virtual Account';
+        $transaction->gateway = 'midtrans';
+        $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
         $transaction->final_amount = $data_payment['course_details']['price'];
         $transaction->status = 'pending';
@@ -303,23 +303,4 @@ class MidtransController extends Controller
         return $chargeData;
     }
 
-    public function cardPaymentStatus(Request $request){
-        $response = json_decode($request['response'], true);
-        
-        if($response['transaction_status'] == 'capture'){
-            if($response['fraud_status'] == 'challenge'){
-                echo 'pembayaran anda sedang dalam pertimbangan, mohon pantau dashboard untuk mendapatkan informasi lebih lanjut..';
-                
-                echo "<script>setTimeout(function(){ window.location.href = '/home'; }, 5000);</script>"; 
-            }
-            else{
-                echo 'Pembayaran berhasil, mengalihkan...';
-                echo "<script>setTimeout(function(){ window.location.href = '/home'; }, 5000);</script>";
-            }
-        }
-        if($response['transaction_status'] == 'deny'){
-            echo 'Transaksi gagal';
-            return header("Refresh", "5;url=/home"); 
-        }
-    }
 }
