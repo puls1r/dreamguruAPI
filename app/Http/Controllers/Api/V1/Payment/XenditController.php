@@ -36,7 +36,7 @@ class XenditController extends Controller
             'checkout_method' => 'ONE_TIME_PAYMENT',
             'channel_code' => 'ID_DANA',
             'channel_properties' => [
-                'success_redirect_url' => 'http://localhost:8000/home',
+                'success_redirect_url' => 'http://dreamguru.id/course/' . $data_payment['course_details']['slug'],
             ],
             'metadata' => [
                 'branch_code' => 'tree_branch'
@@ -51,7 +51,6 @@ class XenditController extends Controller
         
         $chargeData = json_decode(json_encode($chargeData), true);
         return $chargeData;
-
         
     }
 
@@ -77,7 +76,7 @@ class XenditController extends Controller
             'checkout_method' => 'ONE_TIME_PAYMENT',
             'channel_code' => 'ID_LINKAJA',
             'channel_properties' => [
-                'success_redirect_url' => 'http://localhost:8000/home',
+                'success_redirect_url' => 'http://dreamguru.id/course/' . $data_payment['course_details']['slug'],
             ],
             'metadata' => [
                 'branch_code' => 'tree_branch'
@@ -117,7 +116,7 @@ class XenditController extends Controller
             'checkout_method' => 'ONE_TIME_PAYMENT',
             'channel_code' => 'ID_SHOPEEPAY',
             'channel_properties' => [
-                'success_redirect_url' => 'http://localhost:8000/home',
+                'success_redirect_url' => 'http://dreamguru.id/course/' . $data_payment['course_details']['slug'],
             ],
             'metadata' => [
                 'branch_code' => 'tree_branch'
@@ -156,7 +155,7 @@ class XenditController extends Controller
             'channel_code' => 'ID_OVO',
             'channel_properties' => [
                 'mobile_number' => '+62'.$data_payment['phone_number'],
-                'success_redirect_url' => 'http://localhost:8000/home',
+                'success_redirect_url' => 'http://dreamguru.id/course/' . $data_payment['course_details']['slug'],
             ],
             'metadata' => [
                 'branch_code' => 'tree_branch'
