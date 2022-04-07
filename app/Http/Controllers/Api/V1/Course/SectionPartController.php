@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Course;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage; 
 use App\Models\SectionPart;
 use App\Models\CourseSection;
 use App\Models\SectionContentOrder;
@@ -25,18 +26,25 @@ class SectionPartController extends Controller
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
             'text' => ['required', 'string'],
-            'picture' => ['string', 'max:255'],
+            'picture' => ['file', 'image', 'max:1024'],
             'video' => ['string', 'max:255'],
             'status' => ['required','string', 'in:completed,draft'],
             'is_unlock' => ['required','boolean'],
             'estimated_time' => ['required','numeric'],
         ]);
 
+        //get course id
+        $course_id = CourseSection::where('id', $section_id)->first()->course_id;
+
         $part = new SectionPart;
+        
+        if($request->hasFile('picture')){
+            $part->picture = $request->file('picture')->store('courses/'. $course_id . '/content/img', 'public');
+        }
+
         $part->course_section_id = $section_id;
         $part->title = $request->title;
         $part->text = $request->text;
-        $part->picture = $request->picture;
         $part->video = $request->video;
         $part->status = $request->status;
         $part->is_unlock = $request->is_unlock;
@@ -63,7 +71,7 @@ class SectionPartController extends Controller
         $this->validate($request, [
             'title' => ['string', 'max:255'],
             'text' => ['string'],
-            'picture' => ['string', 'max:255'],
+            'picture' => ['file', 'image', 'max:1024'],
             'video' => ['string', 'max:255'],
             'order' => ['numeric'],
             'status' => ['string', 'in:completed,draft,archived'],
@@ -71,11 +79,18 @@ class SectionPartController extends Controller
             'estimated_time' => ['numeric'],
         ]);
 
-        $part = SectionPart::findOrFail($part_id);
+        $part = SectionPart::with('course_section.course')->findOrFail($part_id);
+        $course_id = $part->course_section->course->id;
+        if($request->hasFile('picture')){
+            //update picture
+            Storage::disk('public')->delete($part->picture);
+            $part->picture = $request->file('picture')->store('courses/'. $course_id . '/content/img', 'public');
+        }
         foreach($request->input() as $field => $value){
             if($field == 'order'){
                 continue;
             }
+
             $part->{$field} = $request->{$field};
         }
 
@@ -107,5 +122,18 @@ class SectionPartController extends Controller
         $section_content_order->delete();
 
         return response('part archived!');
+    }
+
+    public function deletePicture($part_id){
+        $part = SectionPart::find($part_id);
+        if(!$part){                          //gunakan slug untuk mengidentifikasi model
+            $part = SectionPart::where('slug', $part_id)->firstOrFail();
+        }
+
+        Storage::disk('public')->delete($part->picture);
+        $part->picture = null;
+        $part->save();
+
+        return response('part picture deleted!');
     }
 }

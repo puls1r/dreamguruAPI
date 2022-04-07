@@ -91,10 +91,12 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::prefix('/{course_id}')->group(function(){
             Route::get('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'show']);
-            Route::put('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::post('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/sections', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/rate', [App\Http\Controllers\Api\V1\Course\CourseRatingController::class, 'create'])->middleware(['auth:sanctum']);
             Route::get('/rating', [App\Http\Controllers\Api\V1\Course\CourseRatingController::class, 'getCourseRating']);
+            Route::delete('/thumbnail', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'deleteThumbnail'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::delete('/hero-background', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'deleteHeroBackground'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         });
     });
 
@@ -113,8 +115,9 @@ Route::prefix('v1')->group(function () {
     Route::prefix('parts')->group(function (){
         Route::prefix('/{part_id}')->group(function(){
             Route::get('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'show'])->middleware(['auth:sanctum', 'purchased']);
-            Route::put('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::post('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::delete('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'delete'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::delete('/picture', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'deletePicture'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         });
     });
 
@@ -155,6 +158,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('questions')->group(function (){
         Route::get('/{question_id}', [App\Http\Controllers\Api\V1\Quiz\QuestionController::class, 'show'])->middleware('auth:sanctum');
         Route::put('/{question_id}', [App\Http\Controllers\Api\V1\Quiz\QuestionController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+        Route::delete('/{question_id}/picture', [App\Http\Controllers\Api\V1\Quiz\QuestionController::class, 'deletePicture'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::delete('/{question_id}/answers/{answer_id}', [App\Http\Controllers\Api\V1\Quiz\QuestionController::class, 'deleteAnswer'])->middleware(['auth:sanctum', 'role:teacher,admin']);
     });
 

@@ -21,7 +21,7 @@ class QuestionController extends Controller
             'question' => ['required', 'string', 'max:255'],
             'question_type' => ['required', 'string', 'in:single_answer,multiple_answer'],
             'point' => ['required', 'numeric'],
-            'picture' => ['string'],
+            'picture' => ['file', 'image', 'max:1024'],
             'answers' => ['required', 'array', 'min:1'],
             'answers.*.answer' => ['required', 'string'],
             'answers.*.is_true' => ['required', 'boolean'],
@@ -31,7 +31,9 @@ class QuestionController extends Controller
         $question->question = $request->question;
         $question->question_type = $request->question_type;
         $question->point = $request->point;
-        $question->picture = $request->picture;
+        if($request->hasFile('picture')){
+            $question->picture = $request->file('picture')->store('quizzes/'. $quiz_id . '/img', 'public');
+        }
 
         $question->save();
         $question->quizzes()->attach([$quiz_id => ['order'=>'1']]);
@@ -52,17 +54,21 @@ class QuestionController extends Controller
             'question' => ['required', 'string', 'max:255'],
             'question_type' => ['required', 'string', 'in:single_answer,multiple_answer'],
             'point' => ['required', 'numeric'],
-            'picture' => ['string'],
+            'picture' => ['file', 'image', 'max:1024'],
             'answers' => ['required', 'array', 'min:1'],
             'answers.*.answer' => ['required', 'string'],
-            'answers.*.is_true' => ['required', 'numeric', 'in:0,1'],
+            'answers.*.is_true' => ['required', 'boolean'],
         ]);
 
         $question = Question::findOrFail($question_id);
         $question->question = $request->question;
         $question->question_type = $request->question_type;
         $question->point = $request->point;
-        $question->picture = ($request->picture != NULL) ? $request->picture : '';
+        if($request->hasFile('picture')){
+            //delete current image
+            Storage::disk('public')->delete($question->picture);
+            $question->picture = $request->file('picture')->store('quizzes/'. $quiz_id . '/img', 'public');
+        }
 
         $question->save();
 
@@ -97,5 +103,16 @@ class QuestionController extends Controller
         $question->quizzes()->detach($quiz_id);
 
         return response('question detached');
+    }
+
+    public function deletePicture($question_id){
+        $question = Question::findOrFail($question_id);
+
+        Storage::disk('public')->delete($question->picture);
+        $question->picture = NULL;
+
+        $question->save();
+
+        return response('question picture deleted!');
     }
 }

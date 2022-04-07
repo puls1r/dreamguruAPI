@@ -23,8 +23,8 @@ class CreateCoursesTable extends Migration
             $table->integer('price')->unsigned();
             $table->text('desc');
             $table->string('level');        //beginner, intermediate, advanced
-            $table->string('thumbnail');
-            $table->string('hero_background');
+            $table->string('thumbnail')->nullable();
+            $table->string('hero_background')->nullable();
             $table->time('estimated_time');
             $table->string('trailer')->nullable();
             $table->string('language');

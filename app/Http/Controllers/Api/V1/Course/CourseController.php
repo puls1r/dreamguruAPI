@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Course;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage; 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -16,8 +17,6 @@ use App\Models\UserCourse;
 
 class CourseController extends Controller
 {
-    protected $placeholder_img = 'default_background.jpg';
-
     public function index(){
         $courses = Course::with('teacher.profile')->get();
         foreach($courses as $course){
@@ -64,8 +63,8 @@ class CourseController extends Controller
         $course->level = $request->level;
         $course->language = $request->language;
         $course->estimated_time = $request->estimated_time;
-        $course->hero_background = $this->placeholder_img;
-        $course->thumbnail = $this->placeholder_img;
+        $course->thumbnail = NULL;
+        $course->hero_background = NULL;
         $course->trailer = NULL;
         $course->status = 'draft';
         $course->discount_price = 0;
@@ -110,14 +109,27 @@ class CourseController extends Controller
             'language' => ['string', 'max:25'],
             'category_id' => ['exists:categories,id'],
             'trailer' => ['string', 'max:255'],
-            'thumbnail' => ['file', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'hero_background' => ['file', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'thumbnail' => ['file', 'image', 'max:1024'],
+            'hero_background' => ['file', 'image', 'max:1024'],
             'status' => ['string', 'in:draft,archived,completed'],
             'is_on_discount' => ['boolean'],
             'discount_price' => ['numeric'],
         ]);
 
         $course = Course::findOrFail($course_id);
+
+        //save image
+        if($request->hasFile('hero_background')){
+            //delete current image
+            Storage::disk('public')->delete($course->hero_background);
+            $course->hero_background = $request->file('hero_background')->store('courses/'. $course->id, 'public');
+        }
+        if($request->hasFile('thumbnail')){
+            //delete current image
+            Storage::disk('public')->delete($course->thumbnail);
+            $course->thumbnail = $request->file('thumbnail')->store('courses/'. $course->id, 'public');
+        }
+
         foreach($request->input() as $field => $value){
             $course->{$field} = $request->{$field};
             if($field == 'title'){
@@ -142,5 +154,27 @@ class CourseController extends Controller
         }
         
         return response(new CourseResource($course), 201);
+    }
+
+    public function deleteThumbnail($course_id){
+        $course = Course::findOrFail($course_id);
+        Storage::disk('public')->delete($course->thumbnail);
+        $course->thumbnail = null;
+
+        $course->save();
+        
+        return response('course thumbnail deleted!');
+
+    }
+
+    public function deleteHeroBackground($course_id){
+        $course = Course::findOrFail($course_id);
+        Storage::disk('public')->delete($course->hero_background);
+        $course->hero_background = null;
+
+        $course->save();
+        
+        return response('course hero background deleted!');
+
     }
 }
