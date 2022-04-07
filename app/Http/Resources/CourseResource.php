@@ -39,6 +39,7 @@ class CourseResource extends JsonResource
             "teacher" => $this->whenLoaded('teacher'),
             "category" => $this->whenLoaded('category'),
             "course_sections" => $this->whenLoaded('course_sections'),
+            "students" => $this->whenLoaded('students'),
         ];
     }
 }
