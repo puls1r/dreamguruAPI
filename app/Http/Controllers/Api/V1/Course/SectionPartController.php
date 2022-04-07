@@ -93,4 +93,12 @@ class SectionPartController extends Controller
 
         return response($part);
     }
+
+    public function delete($part_id){
+        $part = SectionPart::findOrFail($part_id);
+        $part->status = 'archived';
+        $part->save();
+
+        return response('part archived!');
+    }
 }
