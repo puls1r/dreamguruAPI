@@ -9,6 +9,8 @@ class Course extends Model
 {
     use HasFactory;
 
+    protected $with = ['students'];
+
     public function course_sections(){
         return $this->hasMany(CourseSection::class);
     }
