@@ -19,6 +19,8 @@ class CourseResource extends JsonResource
             "category_id"=> $this->category_id,
             "teacher_id"=> $this->teacher_id,
             "total_students" => $this->when(isset($this->total_students), $this->total_students),
+            "students_on_progress" => $this->when(isset($this->students_on_progress), $this->students_on_progress),
+            "students_completed" => $this->when(isset($this->students_completed), $this->students_completed),
             "title"=> $this->title,
             "price"=> $this->price,
             "desc"=> $this->desc,
