@@ -99,9 +99,12 @@ class SectionPartController extends Controller
         if(!$part){                          //gunakan slug untuk mengidentifikasi model
             $part = SectionPart::where('slug', $part_id)->firstOrFail();
         }
-        
+
         $part->status = 'archived';
         $part->save();
+
+        $section_content_order = SectionContentOrder::where('course_section_id', $part->course_section_id)->where('content_id', $part->slug)->firstOrFail();
+        $section_content_order->delete();
 
         return response('part archived!');
     }

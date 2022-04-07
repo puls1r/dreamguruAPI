@@ -105,7 +105,7 @@ class SectionQuizController extends Controller
         }
 
         if(isset($request->order) || isset($request->title) || isset($request->is_unlock)){
-            $section_content_order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->firstOrFail();
+            $section_content_order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->where('content_id', $section_quiz->slug)->firstOrFail();
             isset($request->order) ? $section_content_order->order = $request->order : '';
             isset($request->title) ? $section_content_order->title = $request->title : '';
             isset($request->is_unlock) ? $section_content_order->is_unlock = $request->is_unlock : '';
@@ -122,6 +122,9 @@ class SectionQuizController extends Controller
         }
         $section_quiz->status = 'archived';
         $section_quiz->save();
+
+        $section_content_order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->where('content_id', $section_quiz->slug)->firstOrFail();
+        $section_content_order->delete();
 
         return response('section quiz archived!');
     }
