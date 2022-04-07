@@ -11,8 +11,8 @@ use App\Http\Controllers\Api\V1\Payment\MidtransController;
 
 class ChargeController extends Controller
 {
-    private $midtrans_key = 'SB-Mid-server-Z0WqZ60NiCXVrKeoKr0D3miW';
-    private $xendit_key = 'xnd_development_D52med3Ipx8gdSCISxQhpDcUnHoov9vBo0uqJxqVvw76a08Rmkek8JCIvBR6xxc';
+    private $midtrans_key = 'SB-Mid-server-sCcKWBO76FPcN7c5TqMn3e0l';
+    private $xendit_key = 'xnd_development_WYk7MbVJYOgCE3UZakPuSf23UuCEHdqvMwX4ZkgiK74B4EkVI1KIRw5QrW5sDq';
 
     public function __invoke(Request $request){
         $data_payment = $request->all();

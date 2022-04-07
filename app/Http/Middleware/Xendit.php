@@ -17,7 +17,7 @@ class Xendit
     public function handle(Request $request, Closure $next, $token)
     {
         //verify token API
-        if($token == 'ZtlQeavg374UAjH7GUpukIDByJ467oBTIDHxj9L2GmWs5RKt'){
+        if($token == 'CX3vSrHZq6DhRj8fRNsxV77ekfeyLBw19l0dP8QeG7cmdcjH'){
             return $next($request);
         }
         

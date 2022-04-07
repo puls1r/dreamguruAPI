@@ -22,7 +22,7 @@ class TransactionController extends Controller
         
         //get transaction detail from payment gateway
         if($transaction->gateway == 'midtrans'){
-            \Midtrans\Config::$serverKey = 'SB-Mid-server-Z0WqZ60NiCXVrKeoKr0D3miW';
+            \Midtrans\Config::$serverKey = 'SB-Mid-server-sCcKWBO76FPcN7c5TqMn3e0l';
             \Midtrans\Config::$isProduction = false;
 
             $status = \Midtrans\Transaction::status($order_id);
@@ -45,7 +45,7 @@ class TransactionController extends Controller
         }
 
         else{
-            Xendit::setApiKey('xnd_development_P4qDfOss0OCpl8RtKrROHjaQYNCk9dN5lSfk+R1l9Wbe+rSiCwZ3jw==');
+            Xendit::setApiKey('xnd_development_WYk7MbVJYOgCE3UZakPuSf23UuCEHdqvMwX4ZkgiK74B4EkVI1KIRw5QrW5sDq');
 
             $status = \Xendit\EWallets::getEWalletChargeStatus($transaction->charge_id);
             $status = json_decode(json_encode($status) , true);
