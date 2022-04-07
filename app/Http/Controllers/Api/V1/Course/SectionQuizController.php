@@ -26,6 +26,7 @@ class SectionQuizController extends Controller
             'title' => ['required', 'string'],
             'desc' => ['required', 'string'],
             'max_attempt' => ['required', 'numeric'],
+            'point_requirement' => ['required', 'numeric'],
             'is_unlock' => ['required', 'boolean'],
         ]);
 
@@ -37,6 +38,7 @@ class SectionQuizController extends Controller
         $section_quiz->max_attempt = $request->max_attempt;
         $section_quiz->desc = $request->desc;
         $section_quiz->is_unlock = $request->is_unlock;
+        $section_quiz->point_requirement = $request->point_requirement;
         $section_quiz->status = 'draft';
 
         if(!$section_quiz->save()){
@@ -62,6 +64,7 @@ class SectionQuizController extends Controller
             'title' => ['string'],
             'order' => ['numeric'],
             'max_attempt' => ['numeric'],
+            'point_requirement' => ['numeric'],
             'is_unlock' => ['boolean'],
             'status' => ['in:draft,completed'],
         ]);
@@ -69,7 +72,7 @@ class SectionQuizController extends Controller
         //check apakah sudah ada user yang mengerjakan quiz
         $section_quiz = SectionQuiz::findOrFail($section_quiz_id);
         if($section_quiz->user_quizzes()->count() > 0){
-            if(isset($request->max_attempt) || isset($request->is_unlock)){
+            if(isset($request->max_attempt) || isset($request->is_unlock) || isset($request->point_requirement)){
                 if(isset($request->max_attempt)){
                     $section_quiz->max_attempt = $request->max_attempt;
                     $section_quiz->save();
@@ -77,6 +80,11 @@ class SectionQuizController extends Controller
                 
                 if(isset($request->is_unlock)){
                     $section_quiz->is_unlock = $request->is_unlock;
+                    $section_quiz->save();
+                }
+
+                if(isset($request->point_requirement)){
+                    $section_quiz->point_requirement = $request->point_requirement;
                     $section_quiz->save();
                 }
 

@@ -21,7 +21,8 @@ class CreateUserQuizzesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('time_spent')->nullable();
             $table->smallInteger('attempts')->unsigned()->nullable();
-            $table->string('user_score');
+            $table->unsignedInteger('user_score');
+            $table->boolean('is_success');
             $table->string('status');       //completed, in progress, expired
             $table->timestamps();
         });

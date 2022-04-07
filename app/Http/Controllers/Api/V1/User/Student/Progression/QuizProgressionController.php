@@ -36,6 +36,7 @@ class QuizProgressionController extends Controller
         $user_quiz->user_score = 0;
         $user_quiz->time_spent = 0;
         $user_quiz->attempts = 1;
+        $user_quiz->is_success = 0;
         $user_quiz->status = 'in_progress';
 
         $user_quiz->save();
@@ -126,6 +127,10 @@ class QuizProgressionController extends Controller
         }
 
         $user_quiz->user_score = $total_points;
+        $section_quiz = SectionQuiz::where('id', $user_quiz->section_quiz_id)->first();
+        if($user_quiz->user_score >=  $section_quiz->point_requirement){
+            $user_quiz->is_success = 1;
+        }
         $user_quiz->save();
         return response($user_quiz);
     }

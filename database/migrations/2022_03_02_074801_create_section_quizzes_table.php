@@ -22,6 +22,7 @@ class CreateSectionQuizzesTable extends Migration
             $table->string('title');
             $table->text('desc');
             $table->smallInteger('max_attempt')->unsigned()->nullable();
+            $table->unsignedInteger('point_requirement');
             $table->string('slug')->unique()->nullable();
             $table->string('status');  //completed, draft, archived
             $table->boolean('is_unlock');

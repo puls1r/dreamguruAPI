@@ -57,7 +57,6 @@ Route::prefix('v1')->group(function () {
                 Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'index'])->middleware('auth:sanctum');
                 Route::get('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'show'])->middleware('auth:sanctum');
                 Route::post('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'create'])->middleware('auth:sanctum');
-                Route::put('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'update'])->middleware('auth:sanctum');
                 Route::post('/{quiz_id}/answers', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'storeAnswer'])->middleware('auth:sanctum');
                 Route::post('/{quiz_id}/done', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'finishQuiz'])->middleware('auth:sanctum');
             });

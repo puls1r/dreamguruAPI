@@ -58,7 +58,7 @@ class TeacherController extends Controller
             }
         }
 
-        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', '=', $course_id)->where('teacher_id', '=', $teacher_id)->firstOrFail();
+        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category', 'students')->where('id', '=', $course_id)->where('teacher_id', '=', $teacher_id)->firstOrFail();
        
         $course->total_students = UserCourse::where('course_id', $course_id)->count();
         $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','on_progress')->count();
