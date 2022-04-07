@@ -116,7 +116,10 @@ class SectionQuizController extends Controller
     }
 
     public function delete($section_quiz_id){
-        $section_quiz = SectionQuiz::findOrFail($section_quiz_id);
+        $section_quiz = SectionQuiz::find($section_quiz_id);
+        if(!$section_quiz){                          //gunakan slug untuk mengidentifikasi model
+            $section_quiz = SectionPart::where('slug', $section_quiz_id)->firstOrFail();
+        }
         $section_quiz->status = 'archived';
         $section_quiz->save();
 

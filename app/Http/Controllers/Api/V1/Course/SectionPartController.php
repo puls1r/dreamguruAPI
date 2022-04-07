@@ -95,7 +95,11 @@ class SectionPartController extends Controller
     }
 
     public function delete($part_id){
-        $part = SectionPart::findOrFail($part_id);
+        $part = SectionPart::find($part_id);
+        if(!$part){                          //gunakan slug untuk mengidentifikasi model
+            $part = SectionPart::where('slug', $part_id)->firstOrFail();
+        }
+        
         $part->status = 'archived';
         $part->save();
 

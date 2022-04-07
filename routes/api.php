@@ -114,6 +114,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('/{part_id}')->group(function(){
             Route::get('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'show'])->middleware(['auth:sanctum', 'purchased']);
             Route::put('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::delete('/', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'delete'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         });
     });
 
