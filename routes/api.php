@@ -81,7 +81,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('users')->group(function (){
         Route::get('/self', [App\Http\Controllers\Api\V1\UserController::class, 'show'])->middleware(['auth:sanctum']);
         Route::put('/self/security', [App\Http\Controllers\Api\V1\UserController::class, 'updateAccountSecurity'])->middleware(['auth:sanctum']);
-        Route::put('/self/profile', [App\Http\Controllers\Api\V1\UserController::class, 'updateProfile'])->middleware(['auth:sanctum']);
+        Route::post('/self/profile', [App\Http\Controllers\Api\V1\UserController::class, 'updateProfile'])->middleware(['auth:sanctum']);
+        Route::delete('/self/profile/avatar', [App\Http\Controllers\Api\V1\UserController::class, 'deleteAvatar'])->middleware(['auth:sanctum']);
         Route::get('/self/transactions', [App\Http\Controllers\Api\V1\Payment\TransactionController::class, 'index'])->middleware(['auth:sanctum']);
         Route::get('/self/transactions/{order_id}', [App\Http\Controllers\Api\V1\Payment\TransactionController::class, 'show'])->middleware(['auth:sanctum']);
     });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -27,10 +28,16 @@ class UserController extends Controller
             'date_of_birth' => ['date'],
             'gender' => ['string', 'in:male,female'],
             'address' => ['string', 'max:255'],
-            'avatar' => ['file', 'max:1024', 'mimes:jpg,jpeg,png'],
+            'avatar' => ['file', 'max:512', 'image'],
         ]);
 
         $user_profile = UserProfile::where('user_id', Auth::id())->first();
+        if($request->hasFile('avatar')){
+            //update picture
+            Storage::disk('public')->delete($user_profile->avatar);
+            $user_profile->avatar = $request->file('avatar')->store('users/avatars', 'public');
+        }
+
         foreach($request->input() as $field => $value){
             $user_profile->{$field} = $request->{$field};   
         }
@@ -68,5 +75,16 @@ class UserController extends Controller
         else{
             return response('security updated sucessfully!', 200);
         }
+    }
+
+    public function deleteAvatar(){
+        $user_profile = UserProfile::where('user_id', Auth::id())->first();
+
+        Storage::disk('public')->delete($user_profile->avatar);
+        $user_profile->avatar = null;
+
+        $user_profile->save();
+
+        return response('avatar deleted!');
     }
 }
