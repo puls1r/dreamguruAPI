@@ -24,6 +24,7 @@ class CreateSectionQuizzesTable extends Migration
             $table->smallInteger('max_attempt')->unsigned()->nullable();
             $table->string('slug')->unique()->nullable();
             $table->string('status');  //completed, draft, archived
+            $table->boolean('is_unlock');
             $table->timestamps();
         });
     }

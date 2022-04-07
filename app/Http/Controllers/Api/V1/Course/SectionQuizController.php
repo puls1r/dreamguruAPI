@@ -36,6 +36,7 @@ class SectionQuizController extends Controller
         $section_quiz->title = $request->title;
         $section_quiz->max_attempt = $request->max_attempt;
         $section_quiz->desc = $request->desc;
+        $section_quiz->is_unlock = $request->is_unlock;
         $section_quiz->status = 'draft';
 
         if(!$section_quiz->save()){
@@ -68,9 +69,16 @@ class SectionQuizController extends Controller
         //check apakah sudah ada user yang mengerjakan quiz
         $section_quiz = SectionQuiz::findOrFail($section_quiz_id);
         if($section_quiz->user_quizzes()->count() > 0){
-            if(isset($request->max_attempt)){
-                $section_quiz->max_attempt = $request->max_attempt;
-                $section_quiz->save();
+            if(isset($request->max_attempt) || isset($request->is_unlock)){
+                if(isset($request->max_attempt)){
+                    $section_quiz->max_attempt = $request->max_attempt;
+                    $section_quiz->save();
+                }
+                
+                if(isset($request->is_unlock)){
+                    $section_quiz->is_unlock = $request->is_unlock;
+                    $section_quiz->save();
+                }
 
                 return response($section_quiz);
             }
@@ -89,7 +97,7 @@ class SectionQuizController extends Controller
         }
 
         if(isset($request->order) || isset($request->title) || isset($request->is_unlock)){
-            $section_content_order = SectionContentOrder::where('course_section_id', $part->course_section_id)->firstOrFail();
+            $section_content_order = SectionContentOrder::where('course_section_id', $section_quiz->course_section_id)->firstOrFail();
             isset($request->order) ? $section_content_order->order = $request->order : '';
             isset($request->title) ? $section_content_order->title = $request->title : '';
             isset($request->is_unlock) ? $section_content_order->is_unlock = $request->is_unlock : '';

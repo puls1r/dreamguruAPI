@@ -21,7 +21,7 @@ class TeacherController extends Controller
     }
 
     public function getCourses($teacher_id){
-        $courses = Course::with('teacher')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'completed')->get();
+        $courses = Course::with('teacher', 'students')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'completed')->get();
         return response($courses);
     }
 
@@ -31,7 +31,7 @@ class TeacherController extends Controller
     }
 
     public function getArchivedCourses($teacher_id){
-        $courses = Course::with('teacher')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'archived')->get();
+        $courses = Course::with('teacher', 'students')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'archived')->get();
         return response($courses);
     }
 }
