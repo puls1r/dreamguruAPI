@@ -28,7 +28,7 @@ class TeacherController extends Controller
         $courses = Course::with('teacher', 'students')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'completed')->get();
         foreach($courses as $course){
             $course->total_students = UserCourse::where('course_id', $course->id)->count();
-            $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','on_progress')->count();
+            $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','in_progress')->count();
             $course->students_completed = UserCourse::where('course_id', $course->id)->where('status','completed')->count();
         }
         return response(new CourseCollection($courses));
@@ -43,7 +43,7 @@ class TeacherController extends Controller
         $courses = Course::with('teacher', 'students')->where('teacher_id', '=', $teacher_id)->where('status', '=', 'archived')->get();
         foreach($courses as $course){
             $course->total_students = UserCourse::where('course_id', $course->id)->count();
-            $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','on_progress')->count();
+            $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','in_progress')->count();
             $course->students_completed = UserCourse::where('course_id', $course->id)->where('status','completed')->count();
         }
         return response(new CourseCollection($courses));
@@ -61,7 +61,7 @@ class TeacherController extends Controller
         $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category', 'students')->where('id', '=', $course_id)->where('teacher_id', '=', $teacher_id)->firstOrFail();
        
         $course->total_students = UserCourse::where('course_id', $course_id)->count();
-        $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','on_progress')->count();
+        $course->students_on_progress = UserCourse::where('course_id', $course->id)->where('status','in_progress')->count();
         $course->students_completed = UserCourse::where('course_id', $course->id)->where('status','completed')->count();
         return response(new CourseResource($course));
     }
