@@ -18,7 +18,7 @@ use App\Models\UserCourse;
 class CourseController extends Controller
 {
     public function index(){
-        $courses = Course::with('teacher.profile')->get();
+        $courses = Course::with('teacher.profile')->where('status', 'completed')->get();
         foreach($courses as $course){
             $course->total_students = UserCourse::where('course_id', $course->id)->count();
         }
