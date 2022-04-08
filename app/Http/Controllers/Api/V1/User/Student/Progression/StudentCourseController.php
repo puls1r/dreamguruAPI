@@ -21,12 +21,22 @@ class StudentCourseController extends Controller
     }
 
     public function getStudentQuizzes(){
-        $user_quizzes = UserQuiz::where('user_id', Auth::id())->where('status', 'in_progress')->get();
+        $user_quizzes = UserQuiz::with('section_quiz.quiz.questions')->where('user_id', Auth::id())->where('status', 'in_progress')->get();
+        foreach($user_quizzes as $quiz){
+            $total_question = count($quiz->section_quiz->quiz->questions);
+            $quiz->total_question = $total_question;
+        }
+
         return $user_quizzes;
     }
 
     public function getStudentCompletedQuizzes(){
-        $user_quizzes = UserQuiz::where('user_id', Auth::id())->where('status', 'completed')->get();
+        $user_quizzes = UserQuiz::with('section_quiz.quiz.questions')->where('user_id', Auth::id())->where('status', 'completed')->get();
+        foreach($user_quizzes as $quiz){
+            $total_question = count($quiz->section_quiz->quiz->questions);
+            $quiz->total_question = $total_question;
+        }
+
         return $user_quizzes;
     }
 }
