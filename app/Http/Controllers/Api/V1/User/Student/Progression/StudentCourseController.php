@@ -11,12 +11,12 @@ use App\Models\UserQuiz;
 class StudentCourseController extends Controller
 {
     public function getStudentCourses(){
-        $user_course = UserCourse::with('course')->where('user_id', Auth::id())->where('status', 'in_progress')->get();
+        $user_course = UserCourse::with('course.teacher.profile')->where('user_id', Auth::id())->where('status', 'in_progress')->get();
         return $user_course;
     }
 
     public function getStudentCompletedCourses(){
-        $user_course = UserCourse::where('user_id', Auth::id())->where('status', 'completed')->get();
+        $user_course = UserCourse::with('course.teacher.profile')->where('user_id', Auth::id())->where('status', 'completed')->get();
         return $user_course;
     }
 
