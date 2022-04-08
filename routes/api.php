@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [App\Http\Controllers\Api\V1\User\Student\StudentController::class, 'show']);
             Route::prefix('/courses')->group(function(){
                 Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentCourses'])->middleware('auth:sanctum');
+                Route::get('/completed', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentCompletedCourses'])->middleware('auth:sanctum');
             });
             Route::prefix('/parts')->group(function(){
                 Route::get('/{part_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\PartProgressionController::class, 'show']);
@@ -54,7 +55,8 @@ Route::prefix('v1')->group(function () {
                 Route::put('/{assignment_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\AssignmentProgressionController::class, 'update'])->middleware('auth:sanctum');
             });
             Route::prefix('/quizzes')->group(function(){
-                Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'index'])->middleware('auth:sanctum');
+                Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentQuizzes'])->middleware('auth:sanctum');
+                Route::get('/completed', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentCompletedQuizzes'])->middleware('auth:sanctum');
                 Route::get('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'show'])->middleware('auth:sanctum');
                 Route::post('/{quiz_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'create'])->middleware('auth:sanctum');
                 Route::post('/{quiz_id}/answers', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'storeAnswer'])->middleware('auth:sanctum');
