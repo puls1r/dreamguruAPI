@@ -21,11 +21,13 @@ class StudentCourseController extends Controller
     }
 
     public function getStudentQuizzes(){
-        $user_quizzes = UserQuiz::with('section_quiz.quiz.questions', 'section_quiz.course_section.course')->where('user_id', Auth::id())->where('status', 'in_progress')->get();
+        $user_quizzes = UserQuiz::with('section_quiz.quiz.questions')->where('user_id', Auth::id())->where('status', 'in_progress')->get();
         foreach($user_quizzes as $quiz){
             $total_question = count($quiz->section_quiz->quiz->questions);
             $quiz->total_question = $total_question;
         }
+
+        $user_quizzes->load('section_quiz.course_section.course');
 
         return $user_quizzes;
     }
