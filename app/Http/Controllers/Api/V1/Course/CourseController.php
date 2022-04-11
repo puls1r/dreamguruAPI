@@ -18,7 +18,7 @@ use App\Models\UserCourse;
 class CourseController extends Controller
 {
     public function index(){
-        $courses = Course::with('teacher.profile')->get();
+        $courses = Course::with('teacher.profile')->where('status', 'completed')->get();
         foreach($courses as $course){
             $course->total_students = UserCourse::where('course_id', $course->id)->count();
         }
@@ -30,7 +30,7 @@ class CourseController extends Controller
         $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->first();
         
         if(!$course){                          //gunakan slug untuk mengidentifikasi model
-            $course = Course::where('slug', $course_id)->firstOrFail();
+            $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('slug', $course_id)->firstOrFail();
         }
 
         if($course->status == 'draft'){

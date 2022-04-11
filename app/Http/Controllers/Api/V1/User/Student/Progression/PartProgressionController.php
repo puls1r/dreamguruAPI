@@ -28,6 +28,12 @@ class PartProgressionController extends Controller
         
         //check data availablity
         $part = SectionPart::findOrFail($part_id);
+
+        //check if progression is created
+        $user_section_part = UserSectionPart::where('user_id','=',$user_id)->where('section_part_id','=',$part_id)->first();
+        if($user_section_part != null){
+            return response($user_section_part);
+        }
         
         $user_section_part = new UserSectionPart;
         $user_section_part->user_id = $user_id;

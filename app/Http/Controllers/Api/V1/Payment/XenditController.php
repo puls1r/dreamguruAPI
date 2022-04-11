@@ -25,7 +25,13 @@ class XenditController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'dana';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -65,7 +71,13 @@ class XenditController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'linkAja';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -105,7 +117,13 @@ class XenditController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'shopeePay';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -143,7 +161,13 @@ class XenditController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'ovo';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -172,10 +196,6 @@ class XenditController extends Controller
         return $chargeData;
     }
 
-    public function ovoCheckout(Request $request){
-        $code = $request->code;
-        return view('payment.ovo', ['code' => $code]);
-    }
 
     public function chargeAlfamart($data_payment){
 
@@ -188,7 +208,13 @@ class XenditController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'alfamart';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -220,7 +246,13 @@ class XenditController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'indomaret';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
