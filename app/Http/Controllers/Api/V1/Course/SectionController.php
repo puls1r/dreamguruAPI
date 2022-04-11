@@ -58,12 +58,13 @@ class SectionController extends Controller
     public function delete(Request $request, $section_id){
         $section = CourseSection::findOrFail($section_id);
         $section->status = 'archived';
+        $section->save();
 
         $section_content_orders = SectionContentOrder::where('course_section_id', $section_id)->get();
         foreach($section_content_orders as $data){
             $data->delete();
         }
-
+        
         return response('section archived');
     }
 
