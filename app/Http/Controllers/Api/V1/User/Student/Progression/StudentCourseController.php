@@ -120,7 +120,6 @@ class StudentCourseController extends Controller
         }
 
         $total_progression = $user_assignments + $user_parts + $user_quizzes;
-        dd($total_progression);
         
         if($total_contents == $total_progression){
             $user_course = UserCourse::where('user_id', $user_id)
