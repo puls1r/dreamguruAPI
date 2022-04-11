@@ -127,7 +127,7 @@ class StudentCourseController extends Controller
             $user_course->status = 'completed';
             $user_course->save();
 
-            return response('course complete!');
+            return response('course complete!', 201);
         }
 
         else{
