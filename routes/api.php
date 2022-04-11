@@ -43,6 +43,7 @@ Route::prefix('v1')->group(function () {
             Route::prefix('/courses')->group(function(){
                 Route::get('/', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentCourses'])->middleware('auth:sanctum');
                 Route::get('/completed', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'getStudentCompletedCourses'])->middleware('auth:sanctum');
+                Route::get('/{course_id}/complete', [App\Http\Controllers\Api\V1\User\Student\Progression\StudentCourseController::class, 'courseComplete'])->middleware('auth:sanctum');
             });
             Route::prefix('/parts')->group(function(){
                 Route::get('/{part_id}', [App\Http\Controllers\Api\V1\User\Student\Progression\PartProgressionController::class, 'show']);
