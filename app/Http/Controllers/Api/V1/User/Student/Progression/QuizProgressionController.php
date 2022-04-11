@@ -30,14 +30,54 @@ class QuizProgressionController extends Controller
     }
 
     public function create($section_quiz_id){
-        $user_quiz = new UserQuiz;
-        $user_quiz->section_quiz_id = $section_quiz_id;
-        $user_quiz->user_id = Auth::id();
-        $user_quiz->user_score = 0;
-        $user_quiz->time_spent = 0;
-        $user_quiz->attempts = 1;
-        $user_quiz->is_success = 0;
-        $user_quiz->status = 'in_progress';
+        //get the latest quiz attempt
+        $latest_user_quiz = UserQuiz::where('user_id', Auth::id())->where('section_quiz_id', $section_quiz_id)->latest('created_at')->first();
+        
+        //first time doing quiz
+        if($latest_user_quiz == null){
+            $user_quiz = new UserQuiz;
+            $user_quiz->section_quiz_id = $section_quiz_id;
+            $user_quiz->user_id = Auth::id();
+            $user_quiz->user_score = 0;
+            $user_quiz->time_spent = 0;
+            $user_quiz->attempts = 1;
+            $user_quiz->is_success = 0;
+            $user_quiz->status = 'in_progress';            
+        }
+
+        else{
+            //check max attempt
+            $max_attempt = SectionQuiz::where('id', $section_quiz_id)->first()->max_attempt;
+
+            //infinite tries
+            if($max_attempt == 0){
+                $user_quiz = new UserQuiz;
+                $user_quiz->section_quiz_id = $section_quiz_id;
+                $user_quiz->user_id = Auth::id();
+                $user_quiz->user_score = 0;
+                $user_quiz->time_spent = 0;
+                $user_quiz->attempts = $latest_user_quiz->attempts + 1;
+                $user_quiz->is_success = 0;
+                $user_quiz->status = 'in_progress';
+
+                $user_quiz->save();
+                return response($user_quiz);
+            }
+
+            if(($latest_user_quiz->attempts + 1) <= $max_attempt){
+                $user_quiz = new UserQuiz;
+                $user_quiz->section_quiz_id = $section_quiz_id;
+                $user_quiz->user_id = Auth::id();
+                $user_quiz->user_score = 0;
+                $user_quiz->time_spent = 0;
+                $user_quiz->attempts = $latest_user_quiz->attempts + 1;
+                $user_quiz->is_success = 0;
+                $user_quiz->status = 'in_progress';
+            }
+            else{
+                return response('max attempt has been reached!', 403);
+            }
+        }
 
         $user_quiz->save();
         return response($user_quiz);
