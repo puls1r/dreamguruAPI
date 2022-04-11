@@ -132,7 +132,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response($user_parts);
+            return response($user_assignments);
         }
 
         
