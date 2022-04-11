@@ -62,12 +62,13 @@ class StudentCourseController extends Controller
         $user_course = UserCourse::where('user_id', $user_id)
             ->where('course_id', $course_id)
             ->first();
+
         if($user_course->status == 'completed'){
             return response('OK');
         }
 
         $course = Course::with('course_sections.available_parts', 'course_sections.available_quizzes', 'course_sections.available_assignments')->find($course_id);
-
+        
         //count total contents
         $total_contents = 0;
         foreach($course->course_sections as $section){
@@ -131,7 +132,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response($total_contents);
+            return response($user_quizzes);
         }
 
         
