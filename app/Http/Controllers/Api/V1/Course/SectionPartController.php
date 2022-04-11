@@ -29,7 +29,7 @@ class SectionPartController extends Controller
             'picture' => ['file', 'image', 'max:1024'],
             'video' => ['string', 'max:255'],
             'status' => ['required','string', 'in:completed,draft'],
-            'is_unlock' => ['required','boolean'],
+            'is_unlock' => ['required','string', 'in:true,false'],
             'estimated_time' => ['required','numeric'],
         ]);
 
@@ -47,7 +47,12 @@ class SectionPartController extends Controller
         $part->text = $request->text;
         $part->video = $request->video;
         $part->status = $request->status;
-        $part->is_unlock = $request->is_unlock;
+        if($request->is_unlock == 'false'){
+            $part->is_unlock = 0;
+        }
+        else{
+            $part->is_unlock = 1;
+        }
         $part->estimated_time = $request->estimated_time;
 
         if(!$part->save()){
