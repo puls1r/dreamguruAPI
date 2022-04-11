@@ -17,12 +17,24 @@ class CourseSection extends Model
         return $this->hasMany(SectionQuiz::class);
     }
 
+    public function available_quizzes(){
+        return $this->quizzes()->where('status', '!=', 'archived');
+    }
+
     public function parts(){
         return $this->hasMany(SectionPart::class);
     }
 
+    public function available_parts(){
+        return $this->parts()->where('status', '!=', 'archived');
+    }
+
     public function assignments(){
         return $this->hasMany(Assignment::class);
+    }
+
+    public function available_assignments(){
+        return $this->assignments()->where('status', '!=', 'archived');
     }
 
     public function discussions(){

@@ -66,7 +66,7 @@ class StudentCourseController extends Controller
             return response('OK');
         }
 
-        $course = Course::with('course_sections.parts', 'course_sections.quizzes', 'course_sections.assignments')->find($course_id);
+        $course = Course::with('course_sections.available_parts', 'course_sections.available_quizzes', 'course_sections.available_assignments')->find($course_id);
 
         //count total contents
         $total_contents = 0;
@@ -131,7 +131,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response($total_contents);
+            return response('condition not satisfied to complete the quiz!', 412);
         }
 
         
