@@ -131,7 +131,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response('condition not satisfied', 412);
+            return response($total_progression);
         }
 
         
