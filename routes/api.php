@@ -108,6 +108,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('/{section_id}')->group(function(){
             Route::get('/', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'show']);
             Route::put('/', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::delete('/', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'delete'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/parts', [App\Http\Controllers\Api\V1\Course\SectionPartController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/assignments', [App\Http\Controllers\Api\V1\Course\AssignmentController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/discussions', [App\Http\Controllers\Api\V1\Course\SectionDiscussionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);

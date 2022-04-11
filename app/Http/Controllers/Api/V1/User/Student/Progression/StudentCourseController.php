@@ -15,25 +15,26 @@ class StudentCourseController extends Controller
 {
     public function getStudentCourses(){
         $user_course = UserCourse::with('course.teacher.profile')
-        ->where('user_id', Auth::id())
-        ->where('status', 'in_progress')
-        ->get();
+            ->where('user_id', Auth::id())
+            ->where('status', 'in_progress')
+            ->get();
         return $user_course;
     }
 
     public function getStudentCompletedCourses(){
         $user_course = UserCourse::with('course.teacher.profile')
-        ->where('user_id', Auth::id())
-        ->where('status', 'completed')
-        ->get();
+            ->where('user_id', Auth::id())
+            ->where('status', 'completed')
+            ->get();
         return $user_course;
     }
 
     public function getStudentQuizzes(){
         $user_quizzes = UserQuiz::with('section_quiz.quiz.questions')
-        ->where('user_id', Auth::id())
-        ->where('status', 'in_progress')
-        ->get();
+            ->where('user_id', Auth::id())
+            ->where('status', 'in_progress')
+            ->get();
+
         foreach($user_quizzes as $quiz){
             $total_question = count($quiz->section_quiz->quiz->questions);
             $quiz->total_question = $total_question;
@@ -46,9 +47,9 @@ class StudentCourseController extends Controller
 
     public function getStudentCompletedQuizzes(){
         $user_quizzes = UserQuiz::with('section_quiz.quiz.questions', 'section_quiz.course_section.course')
-        ->where('user_id', Auth::id())
-        ->where('status', 'completed')
-        ->get();
+            ->where('user_id', Auth::id())
+            ->where('status', 'completed')
+            ->get();
         foreach($user_quizzes as $quiz){
             $total_question = count($quiz->section_quiz->quiz->questions);
             $quiz->total_question = $total_question;
@@ -80,9 +81,9 @@ class StudentCourseController extends Controller
         foreach($course->course_sections as $section){
             foreach($section->parts as $part){
                 $part_progression = UserSectionPart::where('user_id', $user_id)
-                ->where('section_part_id', $part->id)
-                ->where('status', 'completed')
-                ->first();
+                    ->where('section_part_id', $part->id)
+                    ->where('status', 'completed')
+                    ->first();
                 if($part_progression != null){
                     $user_parts += 1;
                 }
@@ -93,11 +94,11 @@ class StudentCourseController extends Controller
         foreach($course->course_sections as $section){
             foreach($section->quizzes as $quiz){
                 $quiz_progression = UserQuiz::where('user_id', $user_id)
-                ->where('section_quiz_id', $quiz->id)
-                ->where('status', 'completed')
-                ->where('is_success', 1)
-                ->latest('created_at')
-                ->first();
+                    ->where('section_quiz_id', $quiz->id)
+                    ->where('status', 'completed')
+                    ->where('is_success', 1)
+                    ->latest('created_at')
+                    ->first();
                 if($quiz_progression != null){
                     $user_quizzes += 1;
                 }
@@ -108,10 +109,10 @@ class StudentCourseController extends Controller
         foreach($course->course_sections as $section){
             foreach($section->assignments as $assignment){
                 $assignment_progression = UserAssignment::where('user_id', $user_id)
-                ->where('assignment_id', $assignment->id)
-                ->where('status', 'completed')
-                ->latest('created_at')
-                ->first();
+                    ->where('assignment_id', $assignment->id)
+                    ->where('status', 'completed')
+                    ->latest('created_at')
+                    ->first();
                 if($assignment_progression != null){
                     $user_assignments += 1;
                 }
