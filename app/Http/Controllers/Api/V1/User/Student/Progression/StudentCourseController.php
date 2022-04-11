@@ -72,9 +72,9 @@ class StudentCourseController extends Controller
         //count total contents
         $total_contents = 0;
         foreach($course->course_sections as $section){
-            $total_contents += count($section->parts);
-            $total_contents += count($section->quizzes);
-            $total_contents += count($section->assignments);
+            $total_contents += count($section->available_parts);
+            $total_contents += count($section->available_quizzes);
+            $total_contents += count($section->available_assignments);
         }
 
         //get student progression
@@ -132,7 +132,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response($user_assignments);
+            return response('condition is not satisfied to complete the course', 412);
         }
 
         
