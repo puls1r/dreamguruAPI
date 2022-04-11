@@ -131,7 +131,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response($total_progression);
+            return response($total_contents);
         }
 
         
