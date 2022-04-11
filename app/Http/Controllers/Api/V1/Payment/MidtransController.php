@@ -22,7 +22,13 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'credit_card';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -81,19 +87,25 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'gopay';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
         $params = array(
             'transaction_details' => array(
                 'order_id' => $transaction->order_id,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->final_amount,
             ),
             'payment_type' => 'gopay',
             'gopay' => array(
                 'enable_callback' => true,                // optional
-                'callback_url' => 'http://dreamguru.me'   // optional
+                'callback_url' => 'http://dreamguru.id'   // optional
             ),
             'item_details' => array(
                 array(
@@ -131,7 +143,13 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -139,7 +157,7 @@ class MidtransController extends Controller
             "payment_type" => "bank_transfer",
             "transaction_details" => array(
                 'order_id' => $transaction->order_id,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->final_amount,
             ),
             "bank_transfer" => array(
                 "bank" => "bni"
@@ -174,7 +192,13 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -182,7 +206,7 @@ class MidtransController extends Controller
             "payment_type" => "bank_transfer",
             "transaction_details" => array(
                 'order_id' => $transaction->order_id,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->final_amount,
             ),
             "bank_transfer" => array(
                 "bank" => "bca"
@@ -211,7 +235,13 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -219,7 +249,7 @@ class MidtransController extends Controller
             "payment_type" => "bank_transfer",
             "transaction_details" => array(
                 'order_id' => $transaction->order_id,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->final_amount,
             ),
             "bank_transfer" => array(
                 "bank" => "bri"
@@ -248,7 +278,13 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'echannel';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -256,7 +292,7 @@ class MidtransController extends Controller
             "payment_type" => "echannel",
             "transaction_details" => array(
                 'order_id' => $transaction->order_id,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->final_amount,
             ),
             "echannel" => array(
                 "bill_info1" => "Payment:",
@@ -286,7 +322,13 @@ class MidtransController extends Controller
         $transaction->due_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $transaction->payment_type = 'bank_transfer';
         $transaction->amount = $data_payment['course_details']['price'];
-        $transaction->final_amount = $data_payment['course_details']['price'];
+        //check if course is on discount
+        if($data_payment['course_details']['is_on_discount']){
+            $transaction->final_amount = $data_payment['course_details']['discount_price'];
+        }
+        else{
+            $transaction->final_amount = $data_payment['course_details']['price'];
+        }
         $transaction->status = 'pending';
         $transaction->save();
 
@@ -294,7 +336,7 @@ class MidtransController extends Controller
             "payment_type" => "permata",
             "transaction_details" => array(
                 'order_id' => $transaction->order_id,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->final_amount,
             ),
         );
          
