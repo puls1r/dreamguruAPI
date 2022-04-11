@@ -41,4 +41,17 @@ class StudentCourseController extends Controller
 
         return $user_quizzes;
     }
+
+    public function courseComplete($course_id){
+        $course = Course::with('course_sections.parts', 'course_sections.quizzes', 'course_sections.assignments')->find($course_id);
+
+        //count total contents
+        $total_contents = 0;
+        $total_contents += count($course->course_sections->parts);
+        $total_contents += count($course->course_sections->quizzes);
+        $total_contents += count($course->course_sections->assignments);
+
+        
+
+    }
 }
