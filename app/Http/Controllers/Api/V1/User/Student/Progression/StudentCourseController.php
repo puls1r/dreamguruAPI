@@ -131,7 +131,7 @@ class StudentCourseController extends Controller
         }
 
         else{
-            return response('condition not satisfied to complete the quiz!', 412);
+            return response($total_contents);
         }
 
         
