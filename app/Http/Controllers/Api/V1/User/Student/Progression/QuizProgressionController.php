@@ -138,6 +138,7 @@ class QuizProgressionController extends Controller
         $user_quiz = UserQuiz::findOrFail($user_quiz_id);
 
         $user_quiz->status = 'completed';
+        $user_quiz->time_spent = $request->time_spent;
         $user_quiz->save();
         $user_quiz->refresh();
         $user_quiz->load('user_quiz_questions.user_quiz_question_answers');
