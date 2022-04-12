@@ -17,6 +17,8 @@ class SectionQuizController extends Controller
             $section_quiz = SectionQuiz::with('quiz.questions.answers')->where('slug', $section_quiz_id)->firstOrFail();
         }
 
+        $section_quiz->total_question = count($section_quiz->quiz->questions);
+
         return response($section_quiz);
     }
 

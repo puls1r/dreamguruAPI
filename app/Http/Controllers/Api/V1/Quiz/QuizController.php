@@ -23,7 +23,8 @@ class QuizController extends Controller
     public function show($quiz_id)
     {
         $quiz = Quiz::with('questions.answers', 'user')->findOrFail($quiz_id);
-
+        $quiz->total_question = count($quiz->questions);
+        
         foreach ($quiz->questions as $question) {
             $question->pivot->order;
         }
