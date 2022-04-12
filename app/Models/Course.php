@@ -9,7 +9,7 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $with = ['students'];
+    protected $with = ['students', 'category'];
 
     public function course_sections(){
         return $this->hasMany(CourseSection::class);
