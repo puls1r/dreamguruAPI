@@ -90,7 +90,9 @@ class QuizProgressionController extends Controller
         }
 
         $user_quiz = UserQuiz::findOrFail($user_quiz_id);
-        
+        $user_quiz->time_spent = $request->time_spent;
+        $user_quiz->save();
+
         $user_quiz_question = UserQuizQuestion::where('user_quiz_id', $user_quiz_id)->where('question_id', $request->question_id)->first();
         
         if(!$user_quiz_question){
