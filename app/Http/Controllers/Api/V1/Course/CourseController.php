@@ -108,7 +108,6 @@ class CourseController extends Controller
             'estimated_time' => ['numeric'],
             'language' => ['string', 'max:25'],
             'category_id' => ['exists:categories,id'],
-            'trailer' => ['string', 'max:255'],
             'thumbnail' => ['file', 'image', 'max:1024'],
             'hero_background' => ['file', 'image', 'max:1024'],
             'status' => ['string', 'in:draft,archived,completed'],
