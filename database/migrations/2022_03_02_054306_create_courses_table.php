@@ -25,7 +25,7 @@ class CreateCoursesTable extends Migration
             $table->string('level');        //beginner, intermediate, advanced
             $table->string('thumbnail')->nullable();
             $table->string('hero_background')->nullable();
-            $table->time('estimated_time');
+            $table->unsignedInteger('estimated_time');
             $table->string('trailer')->nullable();
             $table->string('language');
             $table->string('status');       //completed, draft, archived
