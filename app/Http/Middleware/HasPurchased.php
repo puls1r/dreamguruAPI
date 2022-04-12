@@ -28,6 +28,10 @@ class HasPurchased
                     if(!$part){                          //gunakan slug untuk mengidentifikasi model
                         $part = SectionPart::where('slug', $value)->firstOrFail();
                     }
+
+                    if($part->is_unlocked == 1){
+                        return $next($request);
+                    }
                     $course_id = $part->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
                     
@@ -69,6 +73,10 @@ class HasPurchased
                     $section_quiz = SectionQuiz::with('course_section')->find($value);
                     if(!$section_quiz){                          //gunakan slug untuk mengidentifikasi model
                         $section_quiz = SectionQuiz::where('slug', $value)->firstOrFail();
+                    }
+
+                    if($section_quiz->is_unlocked == 1){
+                        return $next($request);
                     }
                     $course_id = $section_quiz->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
