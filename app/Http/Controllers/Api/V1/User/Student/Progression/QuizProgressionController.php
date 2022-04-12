@@ -25,7 +25,7 @@ class QuizProgressionController extends Controller
     }
 
     public function showUsingSectionQuiz($user_id, $section_quiz_id){
-        $user_quiz = UserQuiz::where('user_id' , $user_id)->where('section_quiz_id', $section_quiz_id)->latest('created_at')->firstOrFail();
+        $user_quiz = UserQuiz::with('user_quiz.user_quiz_questions.user_quiz_question_answers')->where('user_id' , $user_id)->where('section_quiz_id', $section_quiz_id)->latest('created_at')->firstOrFail();
         return response($user_quiz);
     }
 
