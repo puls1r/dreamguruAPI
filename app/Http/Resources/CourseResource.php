@@ -19,6 +19,7 @@ class CourseResource extends JsonResource
             "category_id"=> $this->category_id,
             "teacher_id"=> $this->teacher_id,
             "total_students" => $this->when(isset($this->total_students), $this->total_students),
+            "average_ratings" => $this->when(isset($this->average_ratings), $this->average_ratings),
             "students_on_progress" => $this->when(isset($this->students_on_progress), $this->students_on_progress),
             "students_completed" => $this->when(isset($this->students_completed), $this->students_completed),
             "title"=> $this->title,
@@ -40,6 +41,7 @@ class CourseResource extends JsonResource
             "category" => $this->whenLoaded('category'),
             "course_sections" => $this->whenLoaded('course_sections'),
             "students" => $this->whenLoaded('students'),
+            "ratings" => $this->whenLoaded('ratings'),
         ];
     }
 }

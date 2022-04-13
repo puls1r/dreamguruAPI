@@ -21,8 +21,9 @@ class CourseController extends Controller
         $courses = Course::with('teacher.profile', 'ratings')->where('status', 'completed')->get();
         foreach($courses as $course){
             $course->total_students = UserCourse::where('course_id', $course->id)->count();
+            $course->average_ratings = $course->ratings->avg('pivot.rating');
         }
-
+        
         return response(new CourseCollection($courses));
     }
 
@@ -32,6 +33,7 @@ class CourseController extends Controller
                 $q->where('status', '!=', 'archived');
             },
             'course_sections.section_content_orders',
+            'ratings',
             'category'])
             ->where('id', $course_id)->first();
         
@@ -41,6 +43,7 @@ class CourseController extends Controller
                     $q->where('status', '!=', 'archived');
                 },
                 'course_sections.section_content_orders',
+                'ratings',
                 'category'])
                 ->where('slug', $course_id)
                 ->firstOrFail();
@@ -51,6 +54,7 @@ class CourseController extends Controller
         }
         
         $course->total_students = UserCourse::where('course_id', $course_id)->count();
+        $course->average_ratings = $course->ratings->avg('pivot.rating');
         return response(new CourseResource($course));
     }
 
