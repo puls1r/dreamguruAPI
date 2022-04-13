@@ -168,7 +168,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('section-quizzes')->group(function (){
-        Route::get('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'show'])->middleware('auth:sanctum');
+        Route::get('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'show'])->middleware('auth:sanctum', 'purchased');
         Route::put('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::delete('/{section_quiz_id}', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'delete'])->middleware(['auth:sanctum', 'role:teacher,admin']);
         Route::post('/{section_quiz_id}/start', [App\Http\Controllers\Api\V1\User\Student\Progression\QuizProgressionController::class, 'create'])->middleware(['auth:sanctum']);
