@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserCourse;
 use App\Models\SectionPart;
+use App\Models\SectionQuiz;
+use App\Models\Discussion;
 use App\Models\Assignment;
 
 class HasPurchased
@@ -79,7 +81,7 @@ class HasPurchased
                     if($section_quiz->is_unlock == 1){
                         return $next($request);
                     }
-                    
+
                     $course_id = $section_quiz->course_section->course_id;
                     $owned = UserCourse::where('user_id', Auth::id())->where('course_id', $course_id)->exists();
                     
