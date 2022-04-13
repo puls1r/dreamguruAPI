@@ -28,6 +28,6 @@ class Course extends Model
     }
 
     public function ratings(){
-        return $this->belongsToMany(User::class, 'user_ratings')->withPivot('rating', 'comment');
+        return $this->belongsToMany(User::class, 'user_ratings')->withPivot('rating', 'comment')->withTimestamps();
     }
 }

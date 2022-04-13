@@ -66,7 +66,7 @@ class User extends Authenticatable
     }
 
     public function rates(){
-        return $this->belongsToMany(Course::class, 'user_ratings')->withPivot('rating', 'comment');
+        return $this->belongsToMany(Course::class, 'user_ratings')->withPivot('rating', 'comment')->withTimestamps();
     }
 
     public function quizzes(){

@@ -25,11 +25,21 @@ class CourseRatingController extends Controller
         $course = Course::findOrFail($course_id);
         $user = User::findOrFail(Auth::id());
 
-        $user->rates()->attach([$course->id => [
-            'comment' => $request->comment,
-            'rating' => $request->rating
-            ]
-        ]);
+        //check if user already rate
+        $user_rating = UserRating::where('user_id', $user->id)->where('course_id', $course_id)->first();
+        if($user_rating){
+            $user_rating->rating = $request->rating;
+            $user_rating->comment = $request->comment;
+
+            $user_rating->save();
+        }
+        else{
+            $user->rates()->attach([$course->id => [
+                'comment' => $request->comment,
+                'rating' => $request->rating
+                ]
+            ]);
+        }
 
         return response('rating has been posted', 201);
 
