@@ -14,7 +14,12 @@ class QuizController extends Controller
         $quizzes = Quiz::with('questions')->where('user_id', Auth::id())->get();
         foreach($quizzes as $quiz){
             $total_question = count($quiz->questions);
+            $total_points = 0;
+            foreach($quiz->questions as $question){
+                $total_points += $question->point;
+            }
             $quiz->total_question = $total_question;
+            $quiz->total_points = $total_points;
         }
 
         return response($quizzes);
@@ -24,10 +29,13 @@ class QuizController extends Controller
     {
         $quiz = Quiz::with('questions.answers', 'user')->findOrFail($quiz_id);
         $quiz->total_question = count($quiz->questions);
-        
+        $total_points = 0;
         foreach ($quiz->questions as $question) {
             $question->pivot->order;
+            $total_points += $question->point;
         }
+
+        $quiz->total_points = $total_points;
         return response($quiz);
     }
 

@@ -27,10 +27,23 @@ class CourseController extends Controller
     }
 
     public function show($course_id){
-        $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('id', $course_id)->first();
+        $course = Course::with(['teacher.profile',
+            'course_sections' => function($q){
+                $q->where('status', '!=', 'archived');
+            },
+            'course_sections.section_content_orders',
+            'category'])
+            ->where('id', $course_id)->first();
         
         if(!$course){                          //gunakan slug untuk mengidentifikasi model
-            $course = Course::with('teacher.profile', 'course_sections.section_content_orders', 'category')->where('slug', $course_id)->firstOrFail();
+            $course = Course::with(['teacher.profile',
+                'course_sections' => function($q){
+                    $q->where('status', '!=', 'archived');
+                },
+                'course_sections.section_content_orders',
+                'category'])
+                ->where('slug', $course_id)
+                ->firstOrFail();
         }
 
         if($course->status == 'draft'){

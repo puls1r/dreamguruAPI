@@ -18,6 +18,13 @@ class SectionQuizController extends Controller
         }
 
         $section_quiz->total_question = count($section_quiz->quiz->questions);
+        $total_points = 0;
+        foreach ($section_quiz->quiz->questions as $question) {
+            $question->pivot->order;
+            $total_points += $question->point;
+        }
+
+        $section_quiz->total_points = $total_points;
 
         return response($section_quiz);
     }
