@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Api\V1\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Course;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\V1\Payment\XenditController;
 use App\Http\Controllers\Api\V1\Payment\MidtransController;
+use App\Models\Course;
+use App\Models\User;
+use App\Models\UserCourse;
+use App\Models\Transaction;
 
 class ChargeController extends Controller
 {
@@ -18,7 +22,7 @@ class ChargeController extends Controller
         $data_payment = $request->all();
         //step 1 : check apakah user sudah punya corse ini
         //step 2 : check apakah ada pembayaran yang sedang aktif untuk user 
-        //step 3 : kalkulasi harga dari table course + discount
+        //step 3 : kalkulasi harga dari table course + voucher
         $course = Course::findOrFail($request->course_id);
         
         $data_payment['course_details'] = $course->toArray();
@@ -76,6 +80,38 @@ class ChargeController extends Controller
             case "indomaret":
                 $data_payment['api_key'] = $this->xendit_key;
                 return response(XenditController::chargeIndomaret($data_payment));
+            case "dreamguru":
+                //check if course is free
+                if($course->price == 0 || ($course->is_on_discount && $course->discount_price == 0)){
+                    $transaction = new Transaction;
+                    $transaction->user_id = Auth::id();
+                    $transaction->course_id = $data_payment['course_details']['id'];
+                    $transaction->gateway = 'dreamguru';
+                    $transaction->due_date = null;
+                    $transaction->payment_type = 'dreamguru';
+                    $transaction->amount = $data_payment['course_details']['price'];
+                    //check if course is on discount
+                    if($data_payment['course_details']['is_on_discount']){
+                        $transaction->final_amount = $data_payment['course_details']['discount_price'];
+                    }
+                    else{
+                        $transaction->final_amount = $data_payment['course_details']['price'];
+                    }
+                    $transaction->status = 'settlement';
+                    $transaction->save();
+
+                    $user = User::where('id', $transaction->user_id)->first();
+                    $user->courses()->attach($course->id, [
+                        'status' => 'in_progress',
+                        'is_purchased' => '1',
+                        'certificate' => NULL,
+                    ]);
+
+                    return response('Transaction Complete!', 201);
+                }
+                else{
+                    return response('forbidden', 403);
+                }
             default :
                 return response('payment not found!', 404);
             
