@@ -102,7 +102,7 @@ class SectionPartController extends Controller
         }
 
         if(isset($request->order) || isset($request->title) || isset($request->is_unlock)){
-            $section_content_order = SectionContentOrder::where('course_section_id', $part->course_section_id)->firstOrFail();
+            $section_content_order = SectionContentOrder::where('course_section_id', $part->course_section_id)->where('content_id', $part->slug)->firstOrFail();
             isset($request->order) ? $section_content_order->order = $request->order : '';
             isset($request->title) ? $section_content_order->title = $request->title : '';
             isset($request->is_unlock) ? $section_content_order->is_unlock = $request->is_unlock : '';

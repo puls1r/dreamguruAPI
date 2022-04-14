@@ -20,7 +20,7 @@ class QuizProgressionController extends Controller
     }
 
     public function show($user_id, $user_quiz_id){
-        $user_quiz = UserQuiz::where('user_id', '=', $user_id)->where('id', '=', $user_quiz_id)->firstOrFail();
+        $user_quiz = UserQuiz::with('user_quiz_questions.user_quiz_question_answers', 'section_quiz.quiz.questions')->where('user_id', '=', $user_id)->where('id', '=', $user_quiz_id)->firstOrFail();
         return response($user_quiz);
     }
 
