@@ -72,4 +72,16 @@ class SectionController extends Controller
         $section_content_order = SectionContentOrder::where('course_section_id', $course_section_id)->orderBy('order')->get();
         return response($section_content_order);
     }
+
+    public function reorder(Request $request, $section_id){
+        
+        foreach($request->all() as $index => $content){
+            $section_content_order = SectionContentOrder::where('content_id', $content['content_id'])->where('course_section_id', $section_id)->first();
+            $section_content_order->order = $index+1;
+            $section_content_order->save();
+        }
+
+        return response('order saved!');
+    }
+
 }

@@ -114,6 +114,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/discussions', [App\Http\Controllers\Api\V1\Course\SectionDiscussionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/quizzes', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::get('/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'getContentOrder'])->middleware(['auth:sanctum']);
+            Route::put('/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'reorder'])->middleware(['auth:sanctum'], 'role:teacher,admin');
         });
     });
 
