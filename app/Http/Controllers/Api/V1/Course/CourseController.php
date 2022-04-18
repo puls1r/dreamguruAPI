@@ -14,6 +14,8 @@ use App\Http\Resources\CourseCollection;
 use App\Rules\IsTeacher;
 use App\Models\Course;
 use App\Models\UserCourse;
+use App\Models\CourseSection;
+use App\Models\SectionContentOrder;
 
 class CourseController extends Controller
 {
