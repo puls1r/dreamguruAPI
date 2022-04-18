@@ -181,15 +181,14 @@ class CourseController extends Controller
 
         //save section order
         if(isset($request->section_orders)){
-            foreach($request->section_orders as $index => $section){
-                $section = CourseSection::find($section['id']);
+            foreach($request->section_orders as $index => $val){
+                $section = CourseSection::find($val['id']);
                 $section->order = $index+1;
                 $section->save();
     
                 //save section content order
-                foreach($section['section_content_orders'] as $index2 => $content){
+                foreach($val['section_content_orders'] as $index2 => $content){
                     $section_content_orders = SectionContentOrder::where('content_id', $content['content_id'])->first();
-                    return response($section_content_orders);
                     $section_content_orders->order = $index2 + 1;
                     $section_content_orders->save();
                 }
