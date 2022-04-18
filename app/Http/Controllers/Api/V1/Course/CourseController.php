@@ -184,6 +184,7 @@ class CourseController extends Controller
             foreach($request->section_orders as $index => $val){
                 $section = CourseSection::find($val['id']);
                 $section->order = $index+1;
+                return response($val);
                 $section->save();
     
                 //save section content order
