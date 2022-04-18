@@ -97,6 +97,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'show']);
             Route::post('/', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'update'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/sections', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
+            Route::put('/sections/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'reorderSection'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/rate', [App\Http\Controllers\Api\V1\Course\CourseRatingController::class, 'create'])->middleware(['auth:sanctum']);
             Route::get('/rating', [App\Http\Controllers\Api\V1\Course\CourseRatingController::class, 'getCourseRating']);
             Route::delete('/thumbnail', [App\Http\Controllers\Api\V1\Course\CourseController::class, 'deleteThumbnail'])->middleware(['auth:sanctum', 'role:teacher,admin']);
@@ -114,7 +115,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/discussions', [App\Http\Controllers\Api\V1\Course\SectionDiscussionController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::post('/quizzes', [App\Http\Controllers\Api\V1\Course\SectionQuizController::class, 'create'])->middleware(['auth:sanctum', 'role:teacher,admin']);
             Route::get('/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'getContentOrder'])->middleware(['auth:sanctum']);
-            Route::put('/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'reorder'])->middleware(['auth:sanctum'], 'role:teacher,admin');
+            Route::put('/order', [App\Http\Controllers\Api\V1\Course\SectionController::class, 'reorderContent'])->middleware(['auth:sanctum'], 'role:teacher,admin');
         });
     });
 
