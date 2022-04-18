@@ -62,7 +62,9 @@ class TeacherController extends Controller
         'course_sections' => function($q){
             $q->where('status', '!=', 'archived')->orderBy('order');
         }, 
-        'course_sections.section_content_orders', 
+        'course_sections.section_content_orders' => function($q){
+            $q->orderBy('order');
+        }, 
         'category',
         'students'])->where('id', '=', $course_id)->where('teacher_id', '=', $teacher_id)->firstOrFail();
        

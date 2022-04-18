@@ -34,7 +34,9 @@ class CourseController extends Controller
             'course_sections' => function($q){
                 $q->where('status', '!=', 'archived')->orderBy('order');
             },
-            'course_sections.section_content_orders',
+            'course_sections.section_content_orders' => function($q){
+                $q->orderBy('order');
+            },
             'ratings',
             'category'])
             ->where('id', $course_id)->first();
@@ -44,7 +46,9 @@ class CourseController extends Controller
                 'course_sections' => function($q){
                     $q->where('status', '!=', 'archived')->orderBy('order');
                 },
-                'course_sections.section_content_orders',
+                'course_sections.section_content_orders' => function($q){
+                    $q->orderBy('order');
+                },
                 'ratings',
                 'category'])
                 ->where('slug', $course_id)
@@ -188,7 +192,6 @@ class CourseController extends Controller
     
                 //save section content order
                 foreach($val['section_content_orders'] as $index2 => $content){
-                    return response($content);
                     $section_content_orders = SectionContentOrder::where('content_id', $content['content_id'])->first();
                     $section_content_orders->order = $index2 + 1;
                     $section_content_orders->save();
