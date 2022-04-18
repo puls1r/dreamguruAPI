@@ -124,7 +124,7 @@ class CourseController extends Controller
         }
 
         $this->validate($request, [
-            'title' => ['string', 'max:255', Rule::unique(Course::class)->ignore($course_id, 'id')],
+            'title' => ['string', 'max:255', Rule::unique(Course::class)->ignore($course_id)],
             'price' => ['numeric'],
             'desc' => ['string'],
             'level' => ['string', 'in:Beginner,Intermediate,Advanced'],
@@ -164,7 +164,7 @@ class CourseController extends Controller
             if($field == 'title'){
                 $course->slug = Str::slug($course->title, '-');
                 $validate = Validator::make($course->toArray(), [
-                    'slug' => ['unique:courses']
+                    'slug' => [Rule::unique(Course::class)->ignore($course_id)]
                 ]);
 
                 if($validate->fails()){
