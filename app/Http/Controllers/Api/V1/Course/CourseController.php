@@ -95,14 +95,14 @@ class CourseController extends Controller
         $course->slug = Str::slug($course->title, '-');
 
         $validate = Validator::make($course->toArray(), [
-            'slug' => ['unique:courses']
+            'slug' => [Rule::unique(Course::class)->ignore($course->id, 'id')]
         ]);
 
         if($validate->fails()){
             while($validate->fails()){
                 $course->slug = Str::slug($course->title . ' ' . Str::random(4), '-');
                 $validate = Validator::make($course->toArray(), [
-                    'slug' => ['unique:courses']
+                    'slug' => [Rule::unique(Course::class)->ignore($course->id, 'id')]
                 ]);
             }
         }
