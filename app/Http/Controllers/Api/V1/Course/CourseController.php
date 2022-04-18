@@ -32,7 +32,7 @@ class CourseController extends Controller
     public function show($course_id){
         $course = Course::with(['teacher.profile',
             'course_sections' => function($q){
-                $q->where('status', '!=', 'archived');
+                $q->where('status', '!=', 'archived')->orderBy('order');
             },
             'course_sections.section_content_orders',
             'ratings',
@@ -42,7 +42,7 @@ class CourseController extends Controller
         if(!$course){                          //gunakan slug untuk mengidentifikasi model
             $course = Course::with(['teacher.profile',
                 'course_sections' => function($q){
-                    $q->where('status', '!=', 'archived');
+                    $q->where('status', '!=', 'archived')->orderBy('order');
                 },
                 'course_sections.section_content_orders',
                 'ratings',
@@ -187,7 +187,7 @@ class CourseController extends Controller
                 $section->save();
     
                 //save section content order
-                foreach($section->section_content_orders as $index => $content){
+                foreach($section['section_content_orders'] as $index => $content){
                     $section_content_orders = SectionContentOrder::where('content_id', $content['content_id'])->first();
                     $section_content_orders->order = $index+1;
                     $section_content_orders->save();
